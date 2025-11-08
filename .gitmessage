@@ -1,0 +1,47 @@
+# <type>(<scope>): <subject> (max 50 chars)
+# |<----  Using a Maximum Of 50 Characters  ---->|
+
+
+# Explain why this change is being made (wrap at 72 chars)
+# |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+
+
+# Provide links or keys to any relevant tickets, issues or other resources
+# Example: Fixes #23, Related to #42
+
+
+# --- COMMIT END ---
+# Type can be:
+#    feat     (new feature for the user)
+#    fix      (bug fix for the user)
+#    docs     (changes to documentation)
+#    style    (formatting, missing semi colons, etc; no code change)
+#    refactor (refactoring production code)
+#    test     (adding missing tests, refactoring tests; no production code change)
+#    chore    (updating build tasks, package manager configs, etc; no production code change)
+#
+# Scope can be:
+#    component name, file name, or area affected
+#    Examples: dashboard, photos, auth, api, docs
+#
+# Subject should:
+#    - use imperative, present tense: "change" not "changed" nor "changes"
+#    - don't capitalize first letter
+#    - no dot (.) at the end
+#
+# Body should:
+#    - explain WHAT and WHY (not HOW - code shows that)
+#    - include motivation for the change
+#    - contrast with previous behavior
+#
+# Footer should:
+#    - reference issues, PRs, breaking changes
+#    - use "Fixes #123" for GitHub to auto-close issues
+#    - note breaking changes with "BREAKING CHANGE:"
+#
+# Example good commits:
+#    feat(photos): add filtering by date range
+#    fix(auth): resolve login redirect loop
+#    docs(readme): update installation instructions
+#    refactor(dashboard): extract stats calculation to utility
+#    chore(deps): upgrade Next.js to v16.0.2

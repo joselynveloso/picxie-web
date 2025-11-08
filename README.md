@@ -1,36 +1,191 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Picxie Web
+
+> Construction photo management system - Web interface
+
+Picxie Web is a professional construction photo management platform built with Next.js and Supabase. It works alongside the existing React Native mobile app, sharing the same database for seamless photo documentation across devices.
+
+## Features
+
+- 📊 **Dashboard** - Real-time statistics and recent photos overview
+- 📸 **Photo Library** - Browse, filter, and view photos with full metadata
+- 📍 **Site Management** - Track construction sites with GPS and geofencing
+- 📁 **Project Organization** - Manage active and completed projects
+- 🗺️ **Interactive Maps** - Visualize site locations with Leaflet
+- 👥 **Admin Panel** - Database statistics and management tools (coming soon)
+
+## Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Backend**: [Supabase](https://supabase.com/) (PostgreSQL + Storage)
+- **Maps**: [Leaflet](https://leafletjs.com/) with [react-leaflet](https://react-leaflet.js.org/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ and npm
+- Supabase project (shared with mobile app)
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repo-url>
+cd picxie-web
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edit `.env.local` with your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
 
-## Learn More
+4. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+picxie-web/
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Dashboard
+│   ├── photos/            # Photo library
+│   ├── sites/             # Sites list & detail
+│   ├── projects/          # Projects list & detail
+│   └── admin/             # Admin panel
+├── components/            # Reusable React components
+├── lib/                   # Utilities (Supabase client)
+├── types/                 # TypeScript type definitions
+└── public/                # Static assets
+```
 
-## Deploy on Vercel
+## Database Schema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Tables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **sites** - Construction site locations with GPS and radius
+- **projects** - Projects linked to sites (Active/Completed)
+- **photos** - Photo metadata with GPS, address, timestamps
+- **user_profiles** - User information and admin flags
+
+For detailed schema, see [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md).
+
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Documentation
+
+- [CHANGELOG.md](./CHANGELOG.md) - Version history
+- [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md) - Detailed architecture
+- [DATA_ANALYSIS.md](./DATA_ANALYSIS.md) - Data integrity analysis
+- [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) - Roadmap
+
+## Design System
+
+Picxie Web uses a **monochrome design** inspired by Apple's aesthetic:
+
+- **Colors**: White, grays (50-900), black only
+- **Accents**: Green (active status), Red (delete actions)
+- **Style**: Flat design, no shadows, no gradients
+- **Layout**: Clean, minimal, with generous whitespace
+
+## Current Status (v0.1.0)
+
+### ✅ Working
+- Dashboard with stats and recent photos
+- Photo library with filtering
+- Sites list and detail pages with maps
+- Projects list with Active/Completed tabs
+- Responsive mobile/tablet/desktop layout
+
+### ⚠️ Known Issues
+- Sites/projects showing 0 despite existing photo data
+- No authentication implemented yet
+- CRUD operations not functional (UI only)
+
+See [DATA_ANALYSIS.md](./DATA_ANALYSIS.md) for troubleshooting.
+
+### ❌ Not Implemented Yet
+- Authentication & authorization
+- Create/edit/delete sites, projects, photos
+- Photo upload from web
+- User management
+- Search functionality
+- Data export
+
+See [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) for roadmap.
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push code to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Add environment variables in project settings
+4. Deploy!
+
+Vercel automatically detects Next.js and configures everything.
+
+### Other Platforms
+
+This is a standard Next.js app and can be deployed to:
+- Netlify
+- Railway
+- Fly.io
+- Self-hosted (Node.js server)
+
+## Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Yes |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key | Yes |
+
+## Contributing
+
+1. Create a feature branch: `git checkout -b feature/my-feature`
+2. Make changes and test thoroughly
+3. Commit with descriptive message
+4. Push and create a Pull Request
+
+## License
+
+[Your License Here]
+
+## Related Projects
+
+- **Picxie Mobile** - React Native mobile app (iOS/Android)
+
+## Support
+
+For issues or questions:
+- Check [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md) for architecture details
+- Review [DATA_ANALYSIS.md](./DATA_ANALYSIS.md) for troubleshooting
+- Open an issue on GitHub
+
+---
+
+Built with ❤️ for construction teams

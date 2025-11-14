@@ -18,31 +18,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.4] - 2025-11-13
 
-### Fixed - Simplified Middleware for Reliability 🔧
+### Fixed - Middleware Using getUser() for Reliable Auth Checks 🔧
 
-Dramatically simplified middleware to prevent white screen and redirect issues.
+Fixed middleware redirect loop by using getUser() instead of getSession().
 
-**Middleware Simplification:**
-- **Early Return for Auth Pages**: Checks auth path at start and skips all middleware logic
-- **Simplified Cookie Handling**: Direct cookie set/remove on response object
-- **Single Simple Rule**: No session → redirect to login (no complex logic)
-- **Better Matcher Config**: Excludes auth pages in config AND in code
-- **Cleaner Logging**: Simple emoji-prefixed logs for debugging
-- **Error Recovery**: Catches errors and allows through to prevent crashes
+**Key Changes:**
+- **Using getUser() Instead of getSession()**: More reliable for middleware auth checks
+- **Proper Cookie Synchronization**: Updates both request and response cookies
+- **Early Return for Auth Pages**: Skips middleware completely for /auth/*
+- **Better Error Logging**: Shows user email or error message in logs
+- **Error Recovery**: Catches errors and allows through to prevent infinite loops
 
-**Technical Changes:**
-- Removed complex cookie synchronization between request/response
-- Removed redundant session validation
-- Removed auth page redirect logic (already in matcher)
-- Added proper TypeScript typing for CookieOptions
-- Simplified from 100+ lines to ~60 lines
+**Technical Details:**
+- `supabase.auth.getUser()` validates the JWT token server-side
+- `getUser()` is more reliable than `getSession()` in middleware context
+- Proper cookie handler updates both request and response
+- Clear console logging for debugging (🔍, ✅, ❌, 🔒)
 
 **Benefits:**
-- More reliable session detection
-- Prevents redirect loops
+- Fixes redirect loop after successful login
+- More reliable user authentication checks
+- Better debugging with detailed logs
 - Prevents white screen crashes
-- Easier to debug and maintain
-- Better error handling
 
 ## [0.7.3] - 2025-11-13
 

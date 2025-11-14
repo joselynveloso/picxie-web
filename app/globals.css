@@ -10,8 +10,8 @@
 
   /* Text */
   --color-foreground: #ffffff;
-  --color-muted: #a3a3a3;
-  --color-subtle: #525252;
+  --color-muted: #666666;
+  --color-subtle: #404040;
 
   /* Glass - Minimal (3-7% white) */
   --glass-minimal: rgba(255, 255, 255, 0.03);
@@ -135,4 +135,44 @@ body::before {
   background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Micro-interactions */
+a, button, [role="button"] {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover, button:hover, [role="button"]:hover {
+  transform: translateY(-1px);
+}
+
+/* Page transitions */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+main > div {
+  animation: pageEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle hover for interactive elements */
+.glass-card:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Image hover effects */
+img {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+img:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
 }

@@ -28,28 +28,28 @@ export default async function AdminPage() {
   const stats = await getAdminStats();
 
   return (
-    <MainLayout title="Admin Panel">
+    <MainLayout title="Admin">
       {/* Database Stats */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Database Statistics</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="mb-16">
+        <h3 className="text-sm font-medium text-white/60 uppercase tracking-[0.2em] mb-8">Database Statistics</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            title="Total Sites"
+            title="Sites"
             value={stats.totalSites}
             icon={MapPin}
           />
           <StatCard
-            title="Total Projects"
+            title="Projects"
             value={stats.totalProjects}
             icon={Briefcase}
           />
           <StatCard
-            title="Total Photos"
+            title="Photos"
             value={stats.totalPhotos}
             icon={Image}
           />
           <StatCard
-            title="Total Users"
+            title="Users"
             value={stats.totalUsers}
             icon={Users}
           />
@@ -59,60 +59,60 @@ export default async function AdminPage() {
       {/* Management Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Site Management */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Site Management</h3>
-            <button className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors">
+            <h3 className="text-lg font-semibold text-white">Site Management</h3>
+            <button className="px-4 py-2 glass-card text-white text-sm font-medium hover:text-[#e9d5ff] transition-slow">
               Add Site
             </button>
           </div>
-          <p className="text-sm text-gray-600">
-            Manage construction sites, locations, and geofencing settings.
+          <p className="text-sm text-[#666]">
+            Manage sites, locations, and geofencing settings.
           </p>
         </div>
 
         {/* Project Management */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Project Management</h3>
-            <button className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors">
+            <h3 className="text-lg font-semibold text-white">Project Management</h3>
+            <button className="px-4 py-2 glass-card text-white text-sm font-medium hover:text-[#e9d5ff] transition-slow">
               Add Project
             </button>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#666]">
             Create and manage projects, toggle status, and organize photo collections.
           </p>
         </div>
 
         {/* User Management */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">User Management</h3>
-            <button className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors">
+            <h3 className="text-lg font-semibold text-white">User Management</h3>
+            <button className="px-4 py-2 glass-card text-white text-sm font-medium hover:text-[#e9d5ff] transition-slow">
               Manage Users
             </button>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#666]">
             Control user access, permissions, and admin privileges.
           </p>
         </div>
 
         {/* Database Tools */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Database Tools</h3>
-            <Database className="h-6 w-6 text-gray-400" />
+            <h3 className="text-lg font-semibold text-white">Database Tools</h3>
+            <Database className="h-6 w-6 text-white/40" />
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#666]">
             View database health, run maintenance tasks, and export data.
           </p>
         </div>
       </div>
 
       {/* Note */}
-      <div className="mt-6 bg-gray-100 border border-gray-200 rounded-lg p-4">
-        <p className="text-sm text-gray-600">
-          <strong>Note:</strong> CRUD operations (Create, Read, Update, Delete) for sites, projects, and users will be implemented in the next phase. The buttons above are placeholders for future functionality.
+      <div className="mt-6 glass-card p-6">
+        <p className="text-sm text-[#666]">
+          <strong className="text-white/80">Note:</strong> CRUD operations (Create, Read, Update, Delete) for sites, projects, and users will be implemented in the next phase. The buttons above are placeholders for future functionality.
         </p>
       </div>
     </MainLayout>

@@ -14,6 +14,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 
+## [0.4.1] - 2025-11-13
+
+### Changed - Design Refinements ✨
+
+Refined the minimal glass aesthetic with improved layouts, micro-interactions, and visual polish.
+
+**Bottom Navigation Refinements:**
+- Made ultra-thin and minimal (60px max height)
+- Reduced glass opacity to barely visible (2% white)
+- Smaller icons (h-4 w-4)
+- Labels only show on hover (not always visible)
+- Changed to fully rounded (rounded-full)
+- Positioned 20px from bottom with proper spacing
+- Improved active state glow
+
+**Photo Grid Redesign:**
+- Implemented masonry layout using CSS columns for visual interest
+- Added gradient overlay at bottom of each photo (black/80 to transparent)
+- Location text now overlays ON the image (not below)
+- Varying aspect ratios for photos (square, 4:5, 3:4, 5:4)
+- Hover effects: scale(1.02) + brightness(1.1)
+- Minimal glass border (rgba 5%)
+- Break-inside-avoid for proper masonry flow
+
+**Typography Hierarchy:**
+- Fixed secondary text brightness - changed to #666 (darker gray)
+- Headers have more breathing room
+- Better contrast between primary and secondary text
+- Improved readability across all components
+
+**Sites/Projects Cards:**
+- Redesigned with horizontal layout (not vertical)
+- Minimal text-only approach with inline badges
+- Photo count in subtle rounded badge
+- Status badges inline with project name
+- All secondary text uses #666 for consistency
+- Cleaner hover states
+
+**Dashboard Personality:**
+- Changed from boring row to dynamic layout
+- Hero stat: Photos displayed large (text-7xl via StatCard)
+- Secondary stats in 2x3 grid (text-5xl)
+- Staggered fade-in animations (delay-1, delay-2, delay-3)
+- More visual hierarchy and breathing room
+- Stats feel less generic, more unique
+
+**Micro-interactions:**
+- All links/buttons: subtle hover translateY(-1px)
+- Page transitions with fadeIn animation
+- Image hover: scale(1.02) + brightness(1.1)
+- Glass cards: hover translateY(-4px) scale(1.01)
+- Smooth transitions: 0.4-0.6s cubic-bezier
+- Everything feels responsive and fluid
+
+**Admin Panel:**
+- Removed "construction" references (changed to "sites, locations")
+- Updated styling to match minimal glass aesthetic
+- Changed from white cards to glass-card components
+- Updated text colors (#666 for secondary)
+- Title shortened to "Admin" (from "Admin Panel")
+- Buttons use glass-card with lavender hover
+
+### Technical
+- CSS columns for masonry layout (no libraries needed)
+- Gradient overlays with Tailwind utilities
+- Inline styles for ultra-minimal glass (2% white)
+- Varying aspect ratios for visual interest
+- Staggered animation delays for personality
+- All hover states use consistent timing functions
+
 ## [0.4.0] - 2025-11-08
 
 ### Changed - Complete Rebrand with Minimal Glass Aesthetic 🎨
@@ -399,7 +469,8 @@ Complete visual overhaul with premium glassmorphism design system.
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/yourusername/picxie-web/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/yourusername/picxie-web/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/yourusername/picxie-web/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/yourusername/picxie-web/compare/v0.2.0...v0.2.1

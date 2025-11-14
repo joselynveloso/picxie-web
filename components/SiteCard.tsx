@@ -10,25 +10,27 @@ interface SiteCardProps {
 export default function SiteCard({ site, photoCount }: SiteCardProps) {
   return (
     <Link href={`/sites/${site.id}`}>
-      <div className="glass-card cursor-pointer group">
-        <div className="p-8">
-          <div className="flex items-start justify-between mb-6">
-            <h3 className="text-2xl font-semibold text-white group-hover:text-[#e9d5ff] transition-slow">
+      <div className="glass-card cursor-pointer group overflow-hidden">
+        <div className="flex items-center justify-between p-6">
+          <div className="flex-1">
+            <h3 className="text-xl font-semibold text-white group-hover:text-[#e9d5ff] transition-slow mb-2">
               {site.name}
             </h3>
-            <div className="flex items-center gap-2 text-white/40">
-              <Image className="h-4 w-4" />
-              <span className="text-sm font-medium">{photoCount}</span>
-            </div>
-          </div>
-
-          <div className="space-y-3 text-sm">
-            <p className="font-mono text-white/40">
+            <p className="font-mono text-xs text-[#666] mb-1">
               {site.latitude.toFixed(6)}, {site.longitude.toFixed(6)}
             </p>
-            <p className="text-white/30 text-xs uppercase tracking-widest">
-              {site.radius_meters}m radius
+            <p className="text-xs text-[#666] uppercase tracking-widest">
+              {site.radius_meters}m
             </p>
+          </div>
+          <div className="flex flex-col items-end gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+            }}>
+              <Image className="h-3 w-3 text-white/40" />
+              <span className="text-xs font-medium text-white/60">{photoCount}</span>
+            </div>
           </div>
         </div>
       </div>

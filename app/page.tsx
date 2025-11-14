@@ -99,36 +99,47 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* Stats - Minimal Display */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-        <div className="animate-fade-in">
-          <StatCard
-            title="Sites"
-            value={data.totalSites}
-            icon={MapPin}
-          />
-        </div>
-        <div className="animate-fade-in-delay-1">
-          <StatCard
-            title="Projects"
-            value={data.totalProjects}
-            icon={Briefcase}
-            subtitle={`${data.activeProjects} active`}
-          />
-        </div>
-        <div className="animate-fade-in-delay-2">
-          <StatCard
-            title="Active"
-            value={data.activeProjects}
-            icon={CheckCircle}
-          />
-        </div>
-        <div className="animate-fade-in-delay-3">
+      {/* Stats - Staggered Layout */}
+      <div className="mb-24">
+        {/* Hero Stat */}
+        <div className="mb-16 animate-fade-in">
           <StatCard
             title="Photos"
             value={data.totalPhotos}
             icon={ImageIcon}
           />
+        </div>
+
+        {/* Secondary Stats - 2x2 Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-12">
+          <div className="animate-fade-in-delay-1">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <MapPin className="h-3 w-3 text-white/40" />
+                <p className="text-xs font-medium text-[#666] uppercase tracking-[0.2em]">Sites</p>
+              </div>
+              <p className="text-5xl font-bold text-white">{data.totalSites}</p>
+            </div>
+          </div>
+          <div className="animate-fade-in-delay-2">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Briefcase className="h-3 w-3 text-white/40" />
+                <p className="text-xs font-medium text-[#666] uppercase tracking-[0.2em]">Projects</p>
+              </div>
+              <p className="text-5xl font-bold text-white">{data.totalProjects}</p>
+              <p className="text-xs text-[#666]">{data.activeProjects} active</p>
+            </div>
+          </div>
+          <div className="animate-fade-in-delay-3">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-3 w-3 text-white/40" />
+                <p className="text-xs font-medium text-[#666] uppercase tracking-[0.2em]">Active</p>
+              </div>
+              <p className="text-5xl font-bold text-white">{data.activeProjects}</p>
+            </div>
+          </div>
         </div>
       </div>
 

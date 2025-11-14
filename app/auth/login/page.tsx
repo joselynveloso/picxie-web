@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
@@ -10,7 +10,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { signIn } = useAuth();
+
+  // Ensure component is mounted before rendering (prevent hydration issues)
+  useEffect(() => {
+    setMounted(true);
+    console.log('🔐 Login page mounted');
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +53,15 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  // Show loading state while mounting to prevent hydration issues
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#000000]">
+        <div className="text-white/40">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">

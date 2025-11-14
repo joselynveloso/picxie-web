@@ -8,11 +8,89 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### To Do
-- Implement CRUD operations for sites, projects, and users
 - Add authentication and user management
-- Implement photo upload functionality
+- Implement CRUD operations for sites, projects, and users
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
+- Add reverse geocoding for addresses from GPS coordinates
+- Add count-up animations for Dashboard stats
+
+## [0.6.0] - 2025-11-13
+
+### Added - Photo Upload Functionality 📤
+
+Complete photo upload system with drag & drop, EXIF extraction, and Supabase Storage integration.
+
+**Floating Upload Button:**
+- **FloatingUploadButton component** (`components/FloatingUploadButton.tsx`)
+  - Fixed position: bottom-right (bottom-24 right-8)
+  - Lavender glow effect with accent color
+  - Plus icon with hover scale animation
+  - Opens upload modal on click
+  - Appears on all pages via MainLayout
+
+**Upload Modal:**
+- **UploadModal component** (`components/UploadModal.tsx`)
+  - Drag & drop zone with visual feedback
+  - Click to browse file selection
+  - Multiple file selection support
+  - Image preview grid before upload
+  - Site/Project selection dropdowns
+  - Upload progress indicator with percentage
+  - Success/error states with messages
+
+**Drag & Drop Features:**
+- Visual feedback when dragging (border color change)
+- Only accepts image files
+  - Preview thumbnails in 2-4 column grid
+  - Remove individual files before upload
+  - GPS indicator badge on photos with EXIF data
+
+**EXIF Data Extraction:**
+- Installed `exifr` library for EXIF parsing
+  - Extracts GPS coordinates (latitude/longitude)
+  - Extracts DateTimeOriginal
+  - Shows MapPin icon on photos with GPS data
+  - Automatically includes coordinates in upload
+
+**Upload Logic:**
+- Uploads to Supabase Storage 'photos' bucket
+  - Generates unique filename: `${timestamp}-${original-name}`
+  - Creates database record with file_name, site_id, project_id
+  - Includes GPS coordinates from EXIF if available
+  - Progress tracking for multiple uploads
+  - Automatic page refresh on success
+
+**Glass Aesthetic Styling:**
+- Dark modal background: rgba(0, 0, 0, 0.95) with blur
+  - Glass-card container
+  - Lavender accent for active states
+  - Smooth animations and transitions
+  - Minimal borders and hover effects
+  - Upload progress bar with gradient
+
+**Validation:**
+- Requires either site or project selection
+- Error message if neither selected
+- Graceful error handling with user feedback
+- Disabled upload button when invalid
+
+### Changed
+- MainLayout now includes FloatingUploadButton
+- Added exifr dependency to package.json
+
+### Technical
+- Multi-file upload with Promise.all
+- URL.createObjectURL for image previews
+- Cleanup of preview URLs on unmount
+- Escape key to close modal
+- Body scroll lock when modal open
+- TypeScript typed for Site and Project
+
+### Known Issues
+- Reverse geocoding not yet implemented (addresses from GPS)
+- Page reloads after upload (will add optimistic updates later)
+- Supabase Storage bucket needs public access configuration
 
 ## [0.5.0] - 2025-11-13
 
@@ -573,7 +651,8 @@ Complete visual overhaul with premium glassmorphism design system.
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/yourusername/picxie-web/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/yourusername/picxie-web/compare/v0.4.2...v0.5.0
 [0.4.2]: https://github.com/yourusername/picxie-web/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/yourusername/picxie-web/compare/v0.4.0...v0.4.1

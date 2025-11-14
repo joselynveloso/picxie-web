@@ -1,4 +1,5 @@
 import BottomNav from './BottomNav';
+import FloatingUploadButton from './FloatingUploadButton';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ export default function MainLayout({ children, title }: MainLayoutProps) {
   return (
     <div className="min-h-screen relative">
       <BottomNav />
+      <FloatingUploadButton />
 
       <main className="relative pb-32">
         {title && (

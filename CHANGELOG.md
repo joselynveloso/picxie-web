@@ -38,16 +38,22 @@ Fixed authentication redirect issues with hard redirect and comprehensive sessio
 - Session verification prevents redirect if session creation fails
 
 **Middleware:**
-- Removed all dev bypass code (env var and cookie checks)
-- **Comprehensive Path and Session Logging**:
+- **Fixed Session Detection** - Simplified cookie handling to properly detect sessions
+- **Rewritten Cookie Handler**:
+  - Simplified cookie get/set/remove logic
+  - Properly updates both request and response cookies
+  - Fixes session not being detected after login
+- **Cleaner Logic**:
+  - Simple `isAuthPage` check instead of complex pathname matching
+  - Two clear rules: no session → login, has session on auth → home
+  - Removed redundant session validation
+- **Comprehensive Logging**:
   - 🔍 Logs every path being checked
   - 🔍 Logs session check result with user email or "No session"
-  - ℹ️ Logs when allowing access to auth pages
-  - 🔒 Logs when redirecting to login with source path
-  - ✅ Logs when allowing access to protected pages
-  - 🔄 Logs all redirect decisions
-- Better visibility into middleware decisions
-- Helps diagnose redirect loops and auth issues
+  - 🔒 Logs redirects to login with source path
+  - ✅ Logs when allowing access
+- Better error handling prevents infinite loops
+- Fixes middleware redirect loop issue
 
 **AuthContext:**
 - Added comprehensive session debugging

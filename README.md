@@ -58,7 +58,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Configure Supabase Row Level Security (RLS):
+
+See [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) for detailed instructions on setting up database permissions.
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
@@ -95,6 +99,8 @@ For detailed schema, see [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md).
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npx tsx scripts/check-db.ts` - Check database state and counts
+- `npx tsx scripts/fix-data.ts` - Fix missing site/project relationships
 
 ### Documentation
 
@@ -102,6 +108,7 @@ For detailed schema, see [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md).
 - [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md) - Detailed architecture
 - [DATA_ANALYSIS.md](./DATA_ANALYSIS.md) - Data integrity analysis
 - [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) - Roadmap
+- [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) - Database security configuration
 
 ## Design System
 
@@ -122,11 +129,13 @@ Picxie Web uses a **monochrome design** inspired by Apple's aesthetic:
 - Responsive mobile/tablet/desktop layout
 
 ### ⚠️ Known Issues
-- Sites/projects showing 0 despite existing photo data
+- **Row Level Security (RLS)** - Write operations blocked by Supabase RLS policies
+  - See [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) for configuration
+- **Missing data relationships** - Photos exist but may lack site/project associations
+  - Use debug page (`/debug`) to inspect data
+  - Run `npx tsx scripts/fix-data.ts` to auto-fix (requires RLS setup)
 - No authentication implemented yet
 - CRUD operations not functional (UI only)
-
-See [DATA_ANALYSIS.md](./DATA_ANALYSIS.md) for troubleshooting.
 
 ### ❌ Not Implemented Yet
 - Authentication & authorization

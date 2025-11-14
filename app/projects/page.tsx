@@ -41,7 +41,7 @@ export default function ProjectsPage() {
 
       // Get photo counts
       const projectsWithCounts = await Promise.all(
-        projectsData.map(async (project) => {
+        (projectsData as any[]).map(async (project) => {
           const { count } = await supabase
             .from('photos')
             .select('*', { count: 'exact', head: true })

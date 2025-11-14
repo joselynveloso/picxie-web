@@ -15,7 +15,7 @@ async function getSitesWithPhotoCounts() {
 
   // Get photo counts for each site
   const sitesWithCounts = await Promise.all(
-    sites.map(async (site) => {
+    (sites as Site[]).map(async (site) => {
       const { count } = await supabase
         .from('photos')
         .select('*', { count: 'exact', head: true })

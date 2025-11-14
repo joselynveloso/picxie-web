@@ -12,10 +12,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add authentication and user management
 - Implement photo upload functionality
 - Add advanced filtering and search capabilities
-- Implement data validation and error handling
-- Add loading states and error boundaries
 - Create admin management interfaces
-- Fix data integrity issues (sites/projects showing 0)
+
+## [0.2.0] - 2025-11-08
+
+### Added
+- **Debug Page** (`/debug`)
+  - Database inspection interface showing all sites, projects, and photos
+  - "Fix Missing Data" function to auto-create missing site and project relationships
+  - Detailed table views with complete data for troubleshooting
+  - Data integrity validation and warnings
+
+- **Error Handling**
+  - `ErrorBoundary` - React error boundary component for graceful error handling
+  - `ErrorMessage` - Reusable error display component with retry functionality
+  - Dashboard error handling with fallback states
+  - Data integrity warnings when photos exist without sites
+
+- **Utility Scripts**
+  - `scripts/check-db.ts` - Check database state and verify counts
+  - `scripts/fix-data.ts` - Automated data fix script to create missing sites/projects
+  - Auto-linking photos to sites based on GPS coordinates
+  - Auto-creation of default projects for sites
+
+- **Documentation**
+  - `SUPABASE_RLS_SETUP.md` - Comprehensive guide for configuring Row Level Security
+  - RLS policy examples (development and production)
+  - Service role setup instructions
+  - Mobile app compatibility notes
+
+### Changed
+- **Dashboard Improvements**
+  - Added error handling with try/catch and fallback data
+  - Added data integrity warning banner when photos exist without sites
+  - Link to debug page from integrity warning
+  - Improved error messages with actionable information
+
+- **README Updates**
+  - Added RLS setup step to installation instructions
+  - Added utility scripts to available commands
+  - Updated Known Issues section with RLS and data relationship issues
+  - Added SUPABASE_RLS_SETUP.md to documentation list
+
+### Fixed
+- **TypeScript Build Errors**
+  - Fixed type inference issues with Supabase queries in server components
+  - Added explicit type casts for `sites`, `projects`, and `photos` data
+  - Fixed "Property does not exist on type 'never'" errors across all pages
+  - Added proper type imports (Site, Project, Photo) to all pages
+
+- **Type Safety**
+  - Fixed `app/sites/page.tsx` - Cast sites array to `Site[]`
+  - Fixed `app/sites/[id]/page.tsx` - Added Site import and type casting
+  - Fixed `app/projects/page.tsx` - Cast projectsData to `any[]` for joined queries
+  - Fixed `app/projects/[id]/page.tsx` - Cast project data to Project type
+  - Fixed `app/debug/page.tsx` - Added @ts-ignore for Supabase insert operations
+
+### Known Issues
+- **Row Level Security (RLS)** - Supabase RLS policies block write operations
+  - Read operations work correctly (dashboard, photo viewing, etc.)
+  - Write operations (insert, update, delete) fail with RLS policy violations
+  - Debug page "Fix Missing Data" requires RLS configuration
+  - See `SUPABASE_RLS_SETUP.md` for solutions
+
+### Technical Details
+- Build now completes successfully with no TypeScript errors
+- All pages properly typed with Supabase database schema
+- Error boundaries catch and display runtime errors gracefully
+- Utility scripts use tsx for TypeScript execution
 
 ## [0.1.2] - 2025-11-08
 
@@ -153,5 +217,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/yourusername/picxie-web/compare/v0.1.2...v0.2.0
+[0.1.2]: https://github.com/yourusername/picxie-web/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/yourusername/picxie-web/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/yourusername/picxie-web/releases/tag/v0.1.0

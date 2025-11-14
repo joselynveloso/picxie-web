@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Photo, Project } from '@/types/database';
+import { Photo, Project, Site } from '@/types/database';
 import MainLayout from '@/components/MainLayout';
 import PhotoGrid from '@/components/PhotoGrid';
 import MapView from '@/components/MapView';
@@ -18,16 +18,18 @@ async function getSiteData(id: string) {
     supabase.from('photos').select('*').eq('site_id', id).order('captured_at', { ascending: false }),
   ]);
 
-  return { site, projects: projects || [], photos: (photos || []) as Photo[] };
+  return { site, projects: (projects || []) as Project[], photos: (photos || []) as Photo[] };
 }
 
 export default async function SiteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { site, projects, photos } = await getSiteData(id);
+  const { site: siteData, projects, photos } = await getSiteData(id);
 
-  if (!site) {
+  if (!siteData) {
     notFound();
   }
+
+  const site = siteData as Site;
 
   return (
     <MainLayout title={site.name}>

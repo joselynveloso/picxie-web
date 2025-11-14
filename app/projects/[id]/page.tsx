@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Photo, Site } from '@/types/database';
+import { Photo, Site, Project } from '@/types/database';
 import MainLayout from '@/components/MainLayout';
 import PhotoGrid from '@/components/PhotoGrid';
 import { Briefcase, MapPin, Calendar, CheckCircle } from 'lucide-react';
@@ -17,18 +17,20 @@ async function getProjectData(id: string) {
 
   return {
     project,
-    site: project?.sites as unknown as Site,
+    site: (project as any)?.sites as Site,
     photos: (photos || []) as Photo[]
   };
 }
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { project, site, photos } = await getProjectData(id);
+  const { project: projectData, site, photos } = await getProjectData(id);
 
-  if (!project) {
+  if (!projectData) {
     notFound();
   }
+
+  const project = projectData as Project;
 
   return (
     <MainLayout title={project.name}>

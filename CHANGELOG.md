@@ -14,6 +14,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 
+## [0.4.2] - 2025-11-13
+
+### Changed - Enhanced Navigation Bar Visibility 🎯
+
+Improved bottom navigation bar to be more substantial and premium while maintaining modern aesthetic.
+
+**Bottom Navigation Enhancements:**
+- **Much more opaque background**: Changed from 2% white to `rgba(20, 20, 20, 0.85)` for better visibility
+- **Pill-shaped design**: Border-radius of 30px with fit-content width for premium look
+- **Better depth**: Added top border highlight and shadow (`0 -10px 40px rgba(0, 0, 0, 0.5)`)
+- **Improved padding**: Increased to `px-10 py-3` for more substantial presence
+- **Better spacing**: Increased gap between items from `gap-1` to `gap-2`
+
+**Active State Improvements:**
+- Active icons now bright white (`text-white`) instead of lavender-tinted
+- Inactive icons at 50% opacity (`text-white/50`)
+- Hover state at 75% opacity (`text-white/75`)
+- Added small lavender dot indicator under active item
+- Enhanced glow effect for active icon (more visible at 60% opacity)
+
+**Tooltip Updates:**
+- Tooltips now match nav background: `rgba(20, 20, 20, 0.9)`
+- Stronger border: `rgba(255, 255, 255, 0.1)`
+- Active tooltips show in white instead of lavender
+
+### Fixed
+- Bottom nav no longer feels disconnected or too transparent
+- Navigation bar is clearly visible while still floating above content
+- Active states are more obvious and premium-feeling
+
 ## [0.4.1] - 2025-11-13
 
 ### Changed - Design Refinements ✨
@@ -469,7 +499,8 @@ Complete visual overhaul with premium glassmorphism design system.
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.4.1...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/yourusername/picxie-web/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/yourusername/picxie-web/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/yourusername/picxie-web/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/yourusername/picxie-web/compare/v0.2.1...v0.3.0

@@ -17,10 +17,32 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const { error: authError } = await signIn(email, password);
+    console.log('🚀 Login form submitted');
 
-    if (authError) {
-      setError(authError.message);
+    // Safety timeout - reset loading after 10 seconds if redirect doesn't happen
+    const timeoutId = setTimeout(() => {
+      console.warn('⏱️ Login timeout - resetting loading state');
+      setLoading(false);
+      setError('Login is taking longer than expected. Please try again.');
+    }, 10000);
+
+    try {
+      const { error: authError } = await signIn(email, password);
+
+      clearTimeout(timeoutId);
+
+      if (authError) {
+        console.error('🔴 Auth error:', authError.message);
+        setError(authError.message);
+        setLoading(false);
+      } else {
+        console.log('🎉 Login request completed, waiting for redirect...');
+        // Loading state will remain true until redirect happens
+      }
+    } catch (err) {
+      clearTimeout(timeoutId);
+      console.error('🔴 Unexpected error:', err);
+      setError('An unexpected error occurred. Please try again.');
       setLoading(false);
     }
   };

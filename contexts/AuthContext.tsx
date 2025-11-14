@@ -39,29 +39,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    console.log('🔐 Attempting login with:', email);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (!error) {
-      router.push('/');
+    if (error) {
+      console.error('❌ Login error:', error);
+      return { error };
     }
 
-    return { error };
+    console.log('✅ Login successful:', data.user?.email);
+    console.log('📍 Redirecting to home...');
+
+    // Use window.location for a hard redirect to ensure middleware runs
+    window.location.href = '/';
+
+    return { error: null };
   };
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
+    console.log('📝 Attempting signup with:', email);
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    if (!error) {
-      router.push('/');
+    if (error) {
+      console.error('❌ Signup error:', error);
+      return { error };
     }
 
-    return { error };
+    console.log('✅ Signup successful:', data.user?.email);
+    console.log('📍 Redirecting to home...');
+
+    // Use window.location for a hard redirect to ensure middleware runs
+    window.location.href = '/';
+
+    return { error: null };
   };
 
   const signOut = async () => {

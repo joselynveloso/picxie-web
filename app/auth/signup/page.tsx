@@ -31,14 +31,34 @@ export default function SignupPage() {
     }
 
     setLoading(true);
+    console.log('🚀 Signup form submitted');
 
-    const { error: authError } = await signUp(email, password);
-
-    if (authError) {
-      setError(authError.message);
+    // Safety timeout - reset loading after 10 seconds if redirect doesn't happen
+    const timeoutId = setTimeout(() => {
+      console.warn('⏱️ Signup timeout - resetting loading state');
       setLoading(false);
-    } else {
-      setSuccess(true);
+      setError('Signup is taking longer than expected. Please try again.');
+    }, 10000);
+
+    try {
+      const { error: authError } = await signUp(email, password);
+
+      clearTimeout(timeoutId);
+
+      if (authError) {
+        console.error('🔴 Signup error:', authError.message);
+        setError(authError.message);
+        setLoading(false);
+      } else {
+        console.log('🎉 Signup request completed, waiting for redirect...');
+        setSuccess(true);
+        // Loading state will remain true until redirect happens
+      }
+    } catch (err) {
+      clearTimeout(timeoutId);
+      console.error('🔴 Unexpected error:', err);
+      setError('An unexpected error occurred. Please try again.');
+      setLoading(false);
     }
   };
 

@@ -16,6 +16,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.7.1] - 2025-11-13
+
+### Fixed - Authentication Login Issues 🔧
+
+Fixed authentication stuck on "Signing in..." and improved error handling.
+
+**AuthContext Improvements:**
+- Added comprehensive console logging with emojis for debugging (🔐 login, ✅ success, ❌ error, 📍 redirect)
+- Changed from `router.push()` to `window.location.href` for hard redirects to ensure middleware runs
+- Added detailed error logging for debugging authentication issues
+- Improved error return structure with explicit null returns
+
+**Login Page Enhancements:**
+- Added 10-second safety timeout to reset loading state if redirect doesn't happen
+- Added comprehensive console logging for form submission and auth flow
+- Added try-catch error handling for unexpected errors
+- Better error messages displayed to users
+- Timeout warning if login takes longer than expected
+
+**Signup Page Enhancements:**
+- Added same 10-second safety timeout mechanism
+- Added comprehensive console logging matching login page
+- Added try-catch error handling
+- Improved error messaging and user feedback
+
+**Technical Changes:**
+- Hard redirects using `window.location.href` instead of Next.js router
+- Prevents "stuck" loading states with automatic timeout
+- Better debugging with emoji-prefixed console logs
+- Graceful error handling for all edge cases
+
 ## [0.7.0] - 2025-11-13
 
 ### Added - Authentication with Supabase Auth 🔐

@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Image, MapPin, Briefcase, Settings } from 'lucide-react';
+import { Home, Image, MapPin, Briefcase, Settings, LogOut, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useState } from 'react';
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
@@ -14,6 +16,8 @@ const navigation = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const { user, signOut } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50">
@@ -75,6 +79,73 @@ export default function BottomNav() {
             </Link>
           );
         })}
+
+        {/* User Menu */}
+        {user && (
+          <div className="relative ml-4 pl-4"
+            style={{
+              borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+            }}
+          >
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="relative px-4 py-2 rounded-full transition-slow group"
+            >
+              <User className="h-4 w-4 text-white/50 group-hover:text-white/75 transition-slow" />
+              <span className={`
+                absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap
+                opacity-0 group-hover:opacity-100 transition-slow pointer-events-none text-white/80
+              `}
+              style={{
+                background: 'rgba(20, 20, 20, 0.9)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+              >
+                {user.email}
+              </span>
+            </button>
+
+            {/* User Dropdown */}
+            {showUserMenu && (
+              <>
+                {/* Backdrop */}
+                <div
+                  className="fixed inset-0 -z-10"
+                  onClick={() => setShowUserMenu(false)}
+                />
+
+                {/* Menu */}
+                <div
+                  className="absolute bottom-full mb-4 right-0 w-48 rounded-lg overflow-hidden"
+                  style={{
+                    background: 'rgba(20, 20, 20, 0.95)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+                  }}
+                >
+                  <div className="p-3 border-b border-white/10">
+                    <p className="text-xs text-white/60 uppercase tracking-widest mb-1">Signed in as</p>
+                    <p className="text-sm text-white truncate">{user.email}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      signOut();
+                    }}
+                    className="w-full px-3 py-2 text-left text-sm text-white/80 hover:bg-white/5 transition-colors flex items-center gap-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );

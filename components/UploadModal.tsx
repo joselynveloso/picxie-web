@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { X, Upload, Image as ImageIcon, MapPin, Check, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Site, Project } from '@/types/database';
+import { useAuth } from '@/contexts/AuthContext';
 import exifr from 'exifr';
 
 interface UploadModalProps {
@@ -21,6 +22,7 @@ interface FileWithPreview {
 }
 
 export default function UploadModal({ onClose }: UploadModalProps) {
+  const { user } = useAuth();
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [sites, setSites] = useState<Site[]>([]);
@@ -183,6 +185,7 @@ export default function UploadModal({ onClose }: UploadModalProps) {
           file_name: fileName,
           site_id: selectedSite || null,
           project_id: selectedProject || null,
+          user_id: user?.id || null,
           latitude: exif?.latitude || 0,
           longitude: exif?.longitude || 0,
           address: exif?.address || null,

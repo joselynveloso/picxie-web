@@ -8,12 +8,125 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### To Do
-- Add authentication and user management
 - Implement CRUD operations for sites, projects, and users
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 - Add reverse geocoding for addresses from GPS coordinates
 - Add count-up animations for Dashboard stats
+- Add email verification flow
+- Add password reset functionality
+
+## [0.7.0] - 2025-11-13
+
+### Added - Authentication with Supabase Auth 🔐
+
+Complete authentication system with minimal glass aesthetic, protected routes, and user session management.
+
+**Auth Context & Provider:**
+- **AuthProvider component** (`contexts/AuthContext.tsx`)
+  - User session state management
+  - Sign in, sign up, sign out functions
+  - Automatic session persistence
+  - Auth state change listener
+  - Redirects on auth actions
+
+- **ClientLayout wrapper** (`components/ClientLayout.tsx`)
+  - Wraps entire app with AuthProvider
+  - Enables auth across all pages
+
+**Auth Pages:**
+- **Login page** (`/auth/login`)
+  - Minimal glass card design
+  - Email and password inputs with icons
+  - Error handling with messages
+  - Loading states
+  - Link to signup page
+  - Lavender accent on focus
+  - Logo and title at top
+
+- **Signup page** (`/auth/signup`)
+  - Clean registration form
+  - Email, password, confirm password
+  - Password validation (min 6 characters)
+  - Match validation for passwords
+  - Success message with email verification notice
+  - Error handling
+  - Link to login page
+
+**Protected Routes:**
+- **Middleware** (`middleware.ts`)
+  - Uses @supabase/ssr for session management
+  - Protects all pages except /auth/*
+  - Redirects to /auth/login if not authenticated
+  - Redirects to / if already logged in and accessing auth pages
+  - Cookie-based session handling
+
+**Navigation Updates:**
+- **User menu in BottomNav**
+  - User icon with email tooltip on hover
+  - Dropdown menu with user info
+  - "Signed in as" section showing email
+  - Sign out button with icon
+  - Separator between nav items and user menu
+  - Glass aesthetic matching nav design
+
+**Row Level Security:**
+- **SQL script** (`scripts/setup-auth-rls.sql`)
+  - Enables RLS on all tables (sites, projects, photos, user_profiles)
+  - Adds user_id column to all tables
+  - Creates policies for SELECT, INSERT, UPDATE, DELETE
+  - Users can only access their own data
+  - Automatic user profile creation on signup
+  - Trigger function for new user profiles
+
+**Upload Integration:**
+- UploadModal now includes user_id
+  - Automatically sets user_id from auth context
+  - Photos belong to authenticated user
+
+**Styling:**
+- Dark background (#000)
+  - Glass cards with 3% white opacity
+  - Minimal design throughout
+  - Lavender accents (#e9d5ff)
+  - Smooth transitions
+  - Consistent with app aesthetic
+
+### Changed
+- Root layout now wraps app with ClientLayout
+- Added user menu to BottomNav
+- UploadModal includes user_id in photo records
+
+### Added Dependencies
+- @supabase/ssr for session management in middleware
+- @supabase/auth-helpers-nextjs (deprecated, replaced with @supabase/ssr)
+
+### Technical
+- Cookie-based session management
+- Server-side session validation in middleware
+- Client-side auth state with React Context
+- Automatic redirects based on auth state
+- Email/password authentication
+- Session persistence across page loads
+
+### Known Issues
+- Email verification not yet enforced (users can sign in immediately)
+- Password reset flow not implemented
+- No social auth providers yet
+- RLS policies need to be applied in Supabase Dashboard
+- Existing data needs user_id migration (see SQL script comments)
+
+### User Actions Required
+1. **Run RLS SQL script** in Supabase SQL Editor:
+   - Execute `scripts/setup-auth-rls.sql`
+   - This enables RLS and creates policies
+2. **Migrate existing data**:
+   - Update existing records with user_id
+   - See SQL script comments for instructions
+3. **Test authentication**:
+   - Create a new user account
+   - Verify login/logout works
+   - Check protected routes redirect
 
 ## [0.6.0] - 2025-11-13
 
@@ -651,7 +764,8 @@ Complete visual overhaul with premium glassmorphism design system.
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/yourusername/picxie-web/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/yourusername/picxie-web/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/yourusername/picxie-web/compare/v0.4.2...v0.5.0
 [0.4.2]: https://github.com/yourusername/picxie-web/compare/v0.4.1...v0.4.2

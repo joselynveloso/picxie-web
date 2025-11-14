@@ -70,7 +70,7 @@ export default async function DashboardPage() {
     <MainLayout title="Dashboard">
       {/* Error Message */}
       {data.error && (
-        <div className="mb-6">
+        <div className="mb-6 animate-fade-in">
           <ErrorMessage
             title="Failed to load dashboard data"
             message={data.error}
@@ -80,17 +80,19 @@ export default async function DashboardPage() {
 
       {/* Data Integrity Warning */}
       {!data.error && data.totalPhotos > 0 && data.totalSites === 0 && (
-        <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+        <div className="mb-6 glass-card rounded-2xl p-5 border-[#f59e0b]/20 animate-fade-in">
+          <div className="flex items-start gap-4">
+            <div className="glass-medium rounded-xl p-2">
+              <AlertCircle className="h-5 w-5 text-[#f59e0b]" />
+            </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-yellow-900 mb-1">Data Integrity Issue</h3>
-              <p className="text-sm text-yellow-700 mb-2">
+              <h3 className="font-semibold text-gray-100 mb-2">Data Integrity Issue</h3>
+              <p className="text-sm text-gray-400 mb-4">
                 Photos exist but no sites found. This may indicate missing or orphaned data.
               </p>
               <a
                 href="/debug"
-                className="inline-flex items-center px-3 py-1.5 bg-yellow-600 text-white text-sm font-medium rounded hover:bg-yellow-700 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-[#f59e0b]/10 border border-[#f59e0b]/30 text-[#f59e0b] text-sm font-semibold rounded-xl hover:bg-[#f59e0b]/20 transition-smooth"
               >
                 Go to Debug Page →
               </a>
@@ -100,38 +102,46 @@ export default async function DashboardPage() {
       )}
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          title="Total Sites"
-          value={data.totalSites}
-          icon={MapPin}
-        />
-        <StatCard
-          title="Total Projects"
-          value={data.totalProjects}
-          icon={Briefcase}
-          subtitle={`${data.activeProjects} active, ${data.completedProjects} completed`}
-        />
-        <StatCard
-          title="Active Projects"
-          value={data.activeProjects}
-          icon={CheckCircle}
-        />
-        <StatCard
-          title="Total Photos"
-          value={data.totalPhotos}
-          icon={ImageIcon}
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="animate-fade-in">
+          <StatCard
+            title="Total Sites"
+            value={data.totalSites}
+            icon={MapPin}
+          />
+        </div>
+        <div className="animate-fade-in-delay-1">
+          <StatCard
+            title="Total Projects"
+            value={data.totalProjects}
+            icon={Briefcase}
+            subtitle={`${data.activeProjects} active, ${data.completedProjects} completed`}
+          />
+        </div>
+        <div className="animate-fade-in-delay-2">
+          <StatCard
+            title="Active Projects"
+            value={data.activeProjects}
+            icon={CheckCircle}
+          />
+        </div>
+        <div className="animate-fade-in-delay-3">
+          <StatCard
+            title="Total Photos"
+            value={data.totalPhotos}
+            icon={ImageIcon}
+          />
+        </div>
       </div>
 
       {/* Recent Photos Section */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Photos</h3>
+      <div className="animate-fade-in">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl font-semibold text-gray-100">Recent Photos</h3>
           {data.recentPhotos.length > 0 && (
             <a
               href="/photos"
-              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+              className="text-sm font-medium text-[#06b6d4] hover:text-[#0891b2] transition-smooth"
             >
               View all →
             </a>
@@ -141,9 +151,11 @@ export default async function DashboardPage() {
         {data.recentPhotos.length > 0 ? (
           <PhotoGrid photos={data.recentPhotos} columns={3} />
         ) : (
-          <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-            <ImageIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">No photos yet</p>
+          <div className="glass-card rounded-2xl p-16 text-center">
+            <div className="glass-medium rounded-full p-6 inline-block mb-4">
+              <ImageIcon className="h-16 w-16 text-gray-500" />
+            </div>
+            <p className="text-gray-400 text-lg">No photos yet</p>
           </div>
         )}
       </div>

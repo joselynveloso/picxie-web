@@ -14,6 +14,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 
+## [0.3.0] - 2025-11-08
+
+### Changed - Liquid Glass UI Redesign 🎨
+
+Complete visual overhaul with premium glassmorphism design system.
+
+**Design System:**
+- Implemented liquid glass aesthetic with frosted glass effects
+- Added backdrop-filter blur effects throughout
+- New dark theme: background (#0a0a0a), elevated (#111111)
+- Accent color: Cyan/Teal (#06b6d4) with subtle glows
+- Custom CSS utilities for glass effects (.glass, .glass-medium, .glass-card)
+- Smooth animations with cubic-bezier easing
+- Fade-in animations for page elements
+
+**Component Redesigns:**
+- **Sidebar**: Frosted glass background, smooth hover states, active indicator with cyan glow
+- **StatCard**: Glass-morphism cards with icon hover animations and scale effects
+- **SiteCard**: Glass cards with smooth lift animation, cyan accent on hover
+- **ProjectCard**: Glass effects with status badges, icon animations
+- **EmptyState**: Glass circular icons, updated typography
+- **MainLayout**: Dark background with subtle radial gradient overlay
+
+**Page Updates:**
+- **Dashboard**: Staggered fade-in animations for stat cards, updated warning styles
+- **Typography**: Improved spacing, better contrast, tracking adjustments
+- **Colors**: Status colors with glass backgrounds (success, warning, danger)
+
+**CSS Additions:**
+- `.transition-smooth` - 0.3s cubic-bezier transitions
+- `.active-state` - Active navigation state with glow
+- `.accent-glow` / `.accent-glow-sm` - Cyan glow effects
+- Animation keyframes for fade-in with delays
+- Body gradient overlay for depth
+
+**Visual Improvements:**
+- Consistent 2xl border radius (rounded-2xl) for modern look
+- Icon hover animations (scale, color transitions)
+- Status badges with glass backgrounds
+- Improved readability with better text colors
+- Subtle depth with layered glass effects
+
+### Technical Details
+- All transitions use `cubic-bezier(0.4, 0, 0.2, 1)` for smooth motion
+- Backdrop-filter with -webkit prefix for Safari support
+- CSS variables for consistent glass effects across components
+- Maintained responsive design across all breakpoints
+
 ## [0.2.1] - 2025-11-08
 
 ### Diagnosed
@@ -281,7 +329,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.2.1...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/yourusername/picxie-web/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/yourusername/picxie-web/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/yourusername/picxie-web/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/yourusername/picxie-web/compare/v0.1.1...v0.1.2

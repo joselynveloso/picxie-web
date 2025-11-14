@@ -11,35 +11,35 @@ interface ProjectCardProps {
 export default function ProjectCard({ project, site, photoCount }: ProjectCardProps) {
   return (
     <Link href={`/projects/${project.id}`}>
-      <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-400 transition-colors cursor-pointer">
-        <div className="flex items-start justify-between mb-4">
-          <div className="bg-gray-100 rounded-lg p-3">
-            <Briefcase className="h-6 w-6 text-gray-900" />
+      <div className="glass-card rounded-2xl p-6 cursor-pointer group">
+        <div className="flex items-start justify-between mb-5">
+          <div className="glass-medium rounded-xl p-3 transition-smooth group-hover:bg-[#06b6d4]/10 group-hover:border-[#06b6d4]/30">
+            <Briefcase className="h-6 w-6 text-[#06b6d4] transition-smooth group-hover:scale-110" />
           </div>
-          <span className={`px-2 py-1 text-xs font-medium rounded ${
+          <span className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-smooth ${
             project.status === 'Active'
-              ? 'bg-green-100 text-green-600'
-              : 'bg-gray-100 text-gray-600'
+              ? 'bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20'
+              : 'glass text-gray-400'
           }`}>
             {project.status}
           </span>
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-[#06b6d4] transition-smooth">
           {project.name}
         </h3>
 
-        <div className="space-y-2 text-sm text-gray-600">
-          <p className="font-medium">{site.name}</p>
+        <div className="space-y-3 text-sm">
+          <p className="font-medium text-gray-300">{site.name}</p>
 
           <div className="flex items-center gap-4 pt-2">
-            <div className="flex items-center gap-1">
-              <Image className="h-4 w-4" />
-              <span>{photoCount}</span>
+            <div className="flex items-center gap-2 px-2.5 py-1 glass rounded-lg">
+              <Image className="h-4 w-4 text-gray-400" />
+              <span className="text-gray-300">{photoCount}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span>{new Date(project.created_at).toLocaleDateString()}</span>
+            <div className="flex items-center gap-2 px-2.5 py-1 glass rounded-lg">
+              <Calendar className="h-4 w-4 text-gray-400" />
+              <span className="text-gray-300 text-xs">{new Date(project.created_at).toLocaleDateString()}</span>
             </div>
           </div>
         </div>

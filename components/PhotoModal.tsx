@@ -3,7 +3,7 @@
 import { Photo } from '@/types/database';
 import { X, MapPin, Calendar, Navigation } from 'lucide-react';
 import { useEffect } from 'react';
-import Image from 'next/image';
+import PhotoImage from './PhotoImage';
 
 interface PhotoModalProps {
   photo: Photo;
@@ -26,19 +26,34 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{
+        background: 'rgba(0, 0, 0, 0.95)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+      }}
+    >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 bg-white rounded-lg hover:bg-gray-100 transition-colors"
+        className="absolute top-6 right-6 p-3 rounded-full transition-slow"
+        style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        }}
       >
-        <X className="h-6 w-6 text-gray-900" />
+        <X className="h-5 w-5 text-white/80" />
       </button>
 
       <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-6">
         {/* Photo */}
-        <div className="flex-1 relative aspect-video lg:aspect-auto lg:h-[80vh] bg-gray-900 rounded-lg overflow-hidden">
-          <Image
-            src={`https://ampxyzotiiqmwcwsdfut.supabase.co/storage/v1/object/public/photos/${photo.file_name}`}
+        <div className="flex-1 relative aspect-video lg:aspect-auto lg:h-[80vh] rounded-2xl overflow-hidden"
+          style={{
+            background: '#0a0a0a',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+          }}
+        >
+          <PhotoImage
+            fileName={photo.file_name}
             alt={photo.address || 'Photo'}
             fill
             className="object-contain"
@@ -48,42 +63,46 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
         </div>
 
         {/* Metadata */}
-        <div className="lg:w-80 bg-white rounded-lg p-6 space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Photo Details</h3>
+        <div className="lg:w-80 glass-card p-6 space-y-4">
+          <h3 className="text-lg font-semibold text-white">Photo Details</h3>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
+              <MapPin className="h-4 w-4 text-white/40 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-gray-900">Location</p>
-                <p className="text-sm text-gray-600">{photo.address || 'No address'}</p>
+                <p className="text-xs font-medium text-white/60 uppercase tracking-widest mb-1">Location</p>
+                <p className="text-sm text-white">{photo.address || 'No address'}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Navigation className="h-5 w-5 text-gray-400 mt-0.5" />
+              <Navigation className="h-4 w-4 text-white/40 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-gray-900">Coordinates</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs font-medium text-white/60 uppercase tracking-widest mb-1">Coordinates</p>
+                <p className="text-sm text-white font-mono">
                   {photo.latitude.toFixed(6)}, {photo.longitude.toFixed(6)}
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Calendar className="h-5 w-5 text-gray-400 mt-0.5" />
+              <Calendar className="h-4 w-4 text-white/40 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-gray-900">Captured</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs font-medium text-white/60 uppercase tracking-widest mb-1">Captured</p>
+                <p className="text-sm text-white">
                   {new Date(photo.captured_at).toLocaleString()}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-gray-200">
-            <p className="text-xs text-gray-500">
-              File: {photo.file_name}
+          <div className="pt-4"
+            style={{
+              borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+            }}
+          >
+            <p className="text-xs text-[#666]">
+              {photo.file_name}
             </p>
           </div>
         </div>

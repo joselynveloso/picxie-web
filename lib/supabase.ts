@@ -13,3 +13,16 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+
+/**
+ * Get the public URL for a photo from Supabase Storage
+ * @param fileName - The file name stored in the photos table
+ * @returns The public URL to access the image
+ */
+export function getPhotoUrl(fileName: string): string {
+  const { data } = supabase.storage
+    .from('photos')
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
+}

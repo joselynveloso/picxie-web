@@ -3,7 +3,7 @@
 import { Photo } from '@/types/database';
 import { useState } from 'react';
 import PhotoModal from './PhotoModal';
-import Image from 'next/image';
+import PhotoImage from './PhotoImage';
 import { MapPin } from 'lucide-react';
 
 interface PhotoGridProps {
@@ -42,8 +42,8 @@ export default function PhotoGrid({ photos, columns = 3 }: PhotoGridProps) {
                 border: '1px solid rgba(255, 255, 255, 0.05)',
               }}
             >
-              <Image
-                src={`https://ampxyzotiiqmwcwsdfut.supabase.co/storage/v1/object/public/photos/${photo.file_name}`}
+              <PhotoImage
+                fileName={photo.file_name}
                 alt={photo.address || 'Photo'}
                 fill
                 className="object-cover transition-all duration-600"

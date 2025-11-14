@@ -14,6 +14,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 
+## [0.5.0] - 2025-11-13
+
+### Added - Fixed Photo Display and Image Loading 📸
+
+Complete photo loading system with proper Supabase Storage integration, loading states, and error handling.
+
+**Photo Loading Infrastructure:**
+- **`getPhotoUrl()` utility function** in `lib/supabase.ts`
+  - Uses Supabase Storage API to get public URLs
+  - Centralized image URL generation
+  - Properly configured for 'photos' bucket
+
+- **PhotoImage component** (`components/PhotoImage.tsx`)
+  - Reusable component for all photo displays
+  - Loading state with shimmer animation
+  - Graceful error handling with fallback UI
+  - Smooth fade-in on load
+  - Supports all Next.js Image props
+
+**Loading States:**
+- Shimmer animation while images load
+  - Smooth gradient animation (1.5s infinite)
+  - Dark gray shimmer effect (#1a1a1a to #2a2a2a)
+  - Applied to all photo displays
+
+- Error state fallback
+  - Shows "Image unavailable" with icon
+  - Clean minimal design
+  - No broken images displayed
+
+**Component Updates:**
+- **PhotoGrid**: Now uses PhotoImage component
+  - All photos have loading states
+  - Graceful error handling in grid
+  - Masonry layout preserved
+
+- **PhotoModal**: Updated to use PhotoImage
+  - Loading shimmer for large photos
+  - Updated to minimal glass aesthetic
+  - Dark modal background with blur
+  - Glass-card metadata panel
+  - All text in white/gray with proper hierarchy
+
+**Styling Improvements:**
+- Added `@keyframes shimmer` animation to globals.css
+- `.photo-skeleton` utility class
+- PhotoModal now matches minimal glass design
+- Consistent typography across modal
+
+### Changed
+- PhotoModal styling updated to match v0.4.x aesthetic
+  - Dark background: rgba(0, 0, 0, 0.95) with blur
+  - Glass-card for metadata panel
+  - White text with proper hierarchy
+  - Minimal close button with glass effect
+
+### Fixed
+- Photo loading from Supabase Storage (previously hardcoded URLs)
+- Missing loading states for images
+- No error handling for failed image loads
+- PhotoModal white background (now dark glass)
+
+### Technical
+- Created reusable PhotoImage component pattern
+- Centralized URL generation via getPhotoUrl()
+- Next.js Image optimization preserved
+- Smooth transitions and animations
+- Error boundaries for image loading
+
+### Known Issues
+- Supabase Storage bucket may need public access configuration
+- Photos currently showing 400 errors (storage bucket config needed)
+- Error state UI displays gracefully while storage is configured
+
 ## [0.4.2] - 2025-11-13
 
 ### Changed - Enhanced Navigation Bar Visibility 🎯
@@ -499,7 +573,8 @@ Complete visual overhaul with premium glassmorphism design system.
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.4.2...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/yourusername/picxie-web/compare/v0.4.2...v0.5.0
 [0.4.2]: https://github.com/yourusername/picxie-web/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/yourusername/picxie-web/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/yourusername/picxie-web/compare/v0.3.0...v0.4.0

@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -11,7 +13,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { signIn } = useAuth();
+  const router = useRouter();
 
   // Ensure component is mounted before rendering (prevent hydration issues)
   useEffect(() => {
@@ -24,32 +26,36 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    console.log('🚀 Login form submitted');
-
-    // Safety timeout - reset loading after 10 seconds if redirect doesn't happen
-    const timeoutId = setTimeout(() => {
-      console.warn('⏱️ Login timeout - resetting loading state');
-      setLoading(false);
-      setError('Login is taking longer than expected. Please try again.');
-    }, 10000);
+    console.log('🚀 Login form submitted with email:', email);
 
     try {
-      const { error: authError } = await signIn(email, password);
-
-      clearTimeout(timeoutId);
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (authError) {
         console.error('🔴 Auth error:', authError.message);
         setError(authError.message);
         setLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        console.log('✅ Login successful for user:', data.user.email);
+        console.log('📍 Session created, redirecting to home...');
+
+        // Use router.push with refresh to update auth state
+        router.push('/');
+        router.refresh();
       } else {
-        console.log('🎉 Login request completed, waiting for redirect...');
-        // Loading state will remain true until redirect happens
+        console.error('🔴 No user data returned');
+        setError('Login failed - no user data');
+        setLoading(false);
       }
     } catch (err) {
-      clearTimeout(timeoutId);
       console.error('🔴 Unexpected error:', err);
-      setError('An unexpected error occurred. Please try again.');
+      setError('Failed to sign in. Please try again.');
       setLoading(false);
     }
   };
@@ -146,25 +152,6 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-
-          {/* Dev Bypass Button */}
-          {process.env.NODE_ENV === 'development' && (
-            <button
-              onClick={() => {
-                console.log('⚠️ Using dev bypass - skipping authentication');
-                document.cookie = 'dev-bypass=true; path=/; max-age=86400'; // 24 hours
-                window.location.href = '/';
-              }}
-              className="w-full mt-4 px-6 py-3 rounded-lg font-medium transition-slow"
-              style={{
-                background: 'rgba(234, 179, 8, 0.1)',
-                border: '1px solid rgba(234, 179, 8, 0.3)',
-                color: '#eab308',
-              }}
-            >
-              ⚠️ Continue without Login (Dev Mode)
-            </button>
-          )}
 
           {/* Signup Link */}
           <div className="mt-8 text-center">

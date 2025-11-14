@@ -16,6 +16,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.7.3] - 2025-11-13
+
+### Fixed - Auth Redirect and Removed Dev Mode 🔧
+
+Fixed authentication redirect issues and removed dev bypass button.
+
+**Login Page:**
+- Removed dev bypass button completely
+- Fixed redirect using `router.push()` and `router.refresh()`
+- Login now calls Supabase directly instead of through AuthContext
+- Added detailed logging for debugging (user email, session creation)
+- Better error handling with specific error messages
+- Removed timeout mechanism (no longer needed)
+
+**Middleware:**
+- Removed all dev bypass code (env var and cookie checks)
+- Cleaner middleware focused only on auth validation
+- Better session error logging
+
+**AuthContext:**
+- Added comprehensive session debugging
+- Logs active session on load with user email
+- Logs auth state changes with event type
+- Error logging for session check failures
+- Better visibility into auth flow
+
+**Environment Variables:**
+- Removed `DISABLE_AUTH` option from `.env.local.example`
+- Cleaner configuration without dev bypass options
+
+**Technical Changes:**
+- Direct Supabase auth calls from login page
+- Router-based redirects instead of window.location
+- Refresh router to update auth state immediately
+- Better session debugging throughout the flow
+
 ## [0.7.2] - 2025-11-13
 
 ### Added - Dev Bypass for Testing ⚠️

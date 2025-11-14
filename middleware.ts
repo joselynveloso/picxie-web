@@ -3,27 +3,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  // Dev mode bypass - set DISABLE_AUTH=true in .env.local to skip auth for testing
-  if (process.env.DISABLE_AUTH === 'true') {
-    console.log('⚠️ Auth disabled in dev mode (env var)');
-    return NextResponse.next({
-      request: {
-        headers: req.headers,
-      },
-    });
-  }
-
-  // Cookie-based dev bypass - allows skipping auth via login page button
-  const hasDevBypass = req.cookies.get('dev-bypass')?.value === 'true';
-  if (hasDevBypass && process.env.NODE_ENV === 'development') {
-    console.log('⚠️ Auth bypassed via dev cookie');
-    return NextResponse.next({
-      request: {
-        headers: req.headers,
-      },
-    });
-  }
-
   let response = NextResponse.next({
     request: {
       headers: req.headers,

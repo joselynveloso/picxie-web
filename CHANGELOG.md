@@ -16,6 +16,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.7.4] - 2025-11-13
+
+### Fixed - Simplified Middleware for Reliability 🔧
+
+Dramatically simplified middleware to prevent white screen and redirect issues.
+
+**Middleware Simplification:**
+- **Early Return for Auth Pages**: Checks auth path at start and skips all middleware logic
+- **Simplified Cookie Handling**: Direct cookie set/remove on response object
+- **Single Simple Rule**: No session → redirect to login (no complex logic)
+- **Better Matcher Config**: Excludes auth pages in config AND in code
+- **Cleaner Logging**: Simple emoji-prefixed logs for debugging
+- **Error Recovery**: Catches errors and allows through to prevent crashes
+
+**Technical Changes:**
+- Removed complex cookie synchronization between request/response
+- Removed redundant session validation
+- Removed auth page redirect logic (already in matcher)
+- Added proper TypeScript typing for CookieOptions
+- Simplified from 100+ lines to ~60 lines
+
+**Benefits:**
+- More reliable session detection
+- Prevents redirect loops
+- Prevents white screen crashes
+- Easier to debug and maintain
+- Better error handling
+
 ## [0.7.3] - 2025-11-13
 
 ### Fixed - Auth Redirect with Hard Redirect and Session Verification 🔧

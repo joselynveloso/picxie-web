@@ -147,6 +147,25 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Dev Bypass Button */}
+          {process.env.NODE_ENV === 'development' && (
+            <button
+              onClick={() => {
+                console.log('⚠️ Using dev bypass - skipping authentication');
+                document.cookie = 'dev-bypass=true; path=/; max-age=86400'; // 24 hours
+                window.location.href = '/';
+              }}
+              className="w-full mt-4 px-6 py-3 rounded-lg font-medium transition-slow"
+              style={{
+                background: 'rgba(234, 179, 8, 0.1)',
+                border: '1px solid rgba(234, 179, 8, 0.3)',
+                color: '#eab308',
+              }}
+            >
+              ⚠️ Continue without Login (Dev Mode)
+            </button>
+          )}
+
           {/* Signup Link */}
           <div className="mt-8 text-center">
             <p className="text-[#666] text-sm">

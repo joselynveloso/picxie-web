@@ -16,6 +16,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.7.2] - 2025-11-13
+
+### Added - Dev Bypass for Testing ⚠️
+
+Added development bypass button to skip authentication during local testing.
+
+**Login Page:**
+- Added "Continue without Login (Dev Mode)" button
+- Only visible in development environment (`NODE_ENV=development`)
+- Yellow warning styling to indicate it's a dev-only feature
+- Sets `dev-bypass` cookie for 24 hours
+- Console logging when bypass is used
+
+**Middleware:**
+- Added cookie-based dev bypass check
+- Only works when `NODE_ENV=development` for safety
+- Checks for `dev-bypass=true` cookie
+- Console logs when auth is bypassed via cookie
+- Separate from environment variable bypass option
+
+**Security:**
+- Dev bypass only works in development mode
+- Cannot be used in production (NODE_ENV check)
+- Clear warning emoji and styling
+- Console logs for transparency
+
+**Use Cases:**
+- Testing app features without authentication
+- Debugging non-auth related issues
+- Quick development iteration
+- Email confirmation not configured yet
+
 ## [0.7.1] - 2025-11-13
 
 ### Fixed - Authentication Login Issues 🔧

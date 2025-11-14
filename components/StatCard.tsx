@@ -9,16 +9,14 @@ interface StatCardProps {
 
 export default function StatCard({ title, value, icon: Icon, subtitle }: StatCardProps) {
   return (
-    <div className="glass-card rounded-2xl p-6 group">
-      <div className="flex items-center justify-between mb-5">
-        <div className="glass-medium rounded-xl p-3 transition-smooth group-hover:bg-[#06b6d4]/10 group-hover:border-[#06b6d4]/30">
-          <Icon className="h-6 w-6 text-[#06b6d4] transition-smooth group-hover:scale-110" />
+    <div className="transition-smooth group">
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <Icon className="h-4 w-4 text-white/40" />
+          <p className="text-sm font-medium text-white/60 uppercase tracking-[0.2em]">{title}</p>
         </div>
-      </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-gray-400 uppercase tracking-wider">{title}</p>
-        <p className="text-4xl font-bold text-gray-100 transition-smooth">{value}</p>
-        {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
+        <p className="text-7xl font-bold text-white tracking-tight group-hover:text-[#e9d5ff] transition-slow">{value}</p>
+        {subtitle && <p className="text-sm text-white/40">{subtitle}</p>}
       </div>
     </div>
   );

@@ -14,6 +14,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 
+## [0.4.0] - 2025-11-08
+
+### Changed - Complete Rebrand with Minimal Glass Aesthetic 🎨
+
+Complete rebrand moving away from traditional dashboard design to a unique, minimal aesthetic.
+
+**Design Philosophy:**
+- Minimal glass effects (3-7% white opacity)
+- Monochromatic base (pure black #000 to charcoal #171717)
+- ONE accent color only (Lavender #e9d5ff)
+- Extreme typography hierarchy (64px+ headers)
+- Lots of white space
+- No traditional sidebar
+
+**Navigation Reimagined:**
+- **Removed traditional sidebar** - Replaced with floating bottom navigation bar
+- Modern app-style navigation with icon + label
+- Active states with subtle lavender glow
+- Centered, floating glass bar at bottom
+- Clean, unobstructed content area
+
+**Design System Updates:**
+- Pure black background (#000) with vignette
+- Minimal glass: `rgba(255, 255, 255, 0.03)` with 20px blur
+- Large border radius: 24px
+- Soft, deep shadows instead of borders
+- Lavender accent (#e9d5ff) for all interactive states
+- Removed all cyan/teal/blue - single accent only
+
+**Component Redesigns:**
+- **StatCard**: No containers - just large numbers (text-7xl), minimal labels
+- **SiteCard**: Minimal glass cards, text-2xl headers, subtle hover
+- **ProjectCard**: Clean layout, lavender accent badges
+- **EmptyState**: Centered, minimal icons, large text
+- **MainLayout**: No sidebar, full-width content, 64px headers
+
+**Typography:**
+- Headers: 64px+ bold, pure white
+- Body: 14px, white/40 opacity
+- Labels: 12px uppercase, wide tracking
+- System font: -apple-system, SF Pro Display
+- Huge size contrasts for hierarchy
+
+**Branding:**
+- Title changed from "Picxie Web - Construction Photo Management" to "Picxie - Photo Management"
+- Removed construction-specific language
+- Clean, modern positioning
+
+**Interaction:**
+- Slower transitions: 0.4-0.6s
+- Deeper hover lifts: -4px translateY
+- Subtle color shifts to lavender on hover
+- No harsh state changes
+
+### Removed
+- Traditional sidebar navigation
+- Cyan/teal accent colors
+- Glass-medium component variant
+- Gradient backgrounds
+- Status color variety (now minimal)
+
+### Technical
+- Bottom navigation component with active state tracking
+- Updated CSS variables for minimal palette
+- Vignette effect instead of gradient
+- All icons now white with opacity
+- Maintained responsive design
+
+**Design Inspiration:** Figma × Are.na × Cosmos - Minimal, sophisticated, unique.
+
 ## [0.3.0] - 2025-11-08
 
 ### Changed - Liquid Glass UI Redesign 🎨
@@ -329,7 +399,8 @@ Complete visual overhaul with premium glassmorphism design system.
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/yourusername/picxie-web/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/yourusername/picxie-web/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/yourusername/picxie-web/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/yourusername/picxie-web/compare/v0.1.2...v0.2.0

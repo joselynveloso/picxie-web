@@ -1,4 +1,4 @@
-import Sidebar from './Sidebar';
+import BottomNav from './BottomNav';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -7,19 +7,19 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children, title }: MainLayoutProps) {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
+    <div className="min-h-screen relative">
+      <BottomNav />
 
-      <main className="flex-1 lg:ml-64 relative">
+      <main className="relative pb-32">
         {title && (
-          <header className="glass-medium border-b border-white/10 sticky top-0 z-10">
-            <div className="px-6 py-5 lg:px-8">
-              <h2 className="text-3xl font-semibold text-gray-100 tracking-tight">{title}</h2>
+          <header className="sticky top-0 z-10 py-8">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12">
+              <h1 className="text-6xl font-bold text-white tracking-tight">{title}</h1>
             </div>
           </header>
         )}
 
-        <div className="p-6 lg:p-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8 relative z-10">
           {children}
         </div>
       </main>

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Picxie Web - Construction Photo Management",
-  description: "Professional construction photo management and documentation platform",
+  title: "Picxie - Photo Management",
+  description: "Professional photo management and documentation platform",
 };
 
 export default function RootLayout({

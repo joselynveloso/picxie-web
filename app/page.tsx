@@ -80,19 +80,17 @@ export default async function DashboardPage() {
 
       {/* Data Integrity Warning */}
       {!data.error && data.totalPhotos > 0 && data.totalSites === 0 && (
-        <div className="mb-6 glass-card rounded-2xl p-5 border-[#f59e0b]/20 animate-fade-in">
+        <div className="mb-12 glass-card p-6 animate-fade-in">
           <div className="flex items-start gap-4">
-            <div className="glass-medium rounded-xl p-2">
-              <AlertCircle className="h-5 w-5 text-[#f59e0b]" />
-            </div>
+            <AlertCircle className="h-5 w-5 text-[#e9d5ff] flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="font-semibold text-gray-100 mb-2">Data Integrity Issue</h3>
-              <p className="text-sm text-gray-400 mb-4">
+              <h3 className="font-semibold text-white mb-2">Data Integrity Issue</h3>
+              <p className="text-sm text-white/60 mb-4 leading-relaxed">
                 Photos exist but no sites found. This may indicate missing or orphaned data.
               </p>
               <a
                 href="/debug"
-                className="inline-flex items-center px-4 py-2 bg-[#f59e0b]/10 border border-[#f59e0b]/30 text-[#f59e0b] text-sm font-semibold rounded-xl hover:bg-[#f59e0b]/20 transition-smooth"
+                className="inline-flex items-center px-6 py-3 glass-card text-white text-sm font-medium hover:text-[#e9d5ff] transition-slow"
               >
                 Go to Debug Page →
               </a>
@@ -101,33 +99,33 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {/* Stats - Minimal Display */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
         <div className="animate-fade-in">
           <StatCard
-            title="Total Sites"
+            title="Sites"
             value={data.totalSites}
             icon={MapPin}
           />
         </div>
         <div className="animate-fade-in-delay-1">
           <StatCard
-            title="Total Projects"
+            title="Projects"
             value={data.totalProjects}
             icon={Briefcase}
-            subtitle={`${data.activeProjects} active, ${data.completedProjects} completed`}
+            subtitle={`${data.activeProjects} active`}
           />
         </div>
         <div className="animate-fade-in-delay-2">
           <StatCard
-            title="Active Projects"
+            title="Active"
             value={data.activeProjects}
             icon={CheckCircle}
           />
         </div>
         <div className="animate-fade-in-delay-3">
           <StatCard
-            title="Total Photos"
+            title="Photos"
             value={data.totalPhotos}
             icon={ImageIcon}
           />
@@ -136,12 +134,12 @@ export default async function DashboardPage() {
 
       {/* Recent Photos Section */}
       <div className="animate-fade-in">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-semibold text-gray-100">Recent Photos</h3>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-4xl font-bold text-white">Recent</h2>
           {data.recentPhotos.length > 0 && (
             <a
               href="/photos"
-              className="text-sm font-medium text-[#06b6d4] hover:text-[#0891b2] transition-smooth"
+              className="text-sm text-white/40 hover:text-[#e9d5ff] transition-slow"
             >
               View all →
             </a>
@@ -151,11 +149,9 @@ export default async function DashboardPage() {
         {data.recentPhotos.length > 0 ? (
           <PhotoGrid photos={data.recentPhotos} columns={3} />
         ) : (
-          <div className="glass-card rounded-2xl p-16 text-center">
-            <div className="glass-medium rounded-full p-6 inline-block mb-4">
-              <ImageIcon className="h-16 w-16 text-gray-500" />
-            </div>
-            <p className="text-gray-400 text-lg">No photos yet</p>
+          <div className="glass-card p-20 text-center">
+            <ImageIcon className="h-12 w-12 text-white/20 mx-auto mb-6" />
+            <p className="text-white/40 text-lg">No photos yet</p>
           </div>
         )}
       </div>

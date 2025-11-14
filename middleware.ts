@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  console.log('🔍 Middleware check for path:', req.nextUrl.pathname);
+
   let response = NextResponse.next({
     request: {
       headers: req.headers,
@@ -65,10 +67,13 @@ export async function middleware(req: NextRequest) {
       error,
     } = await supabase.auth.getSession();
 
+    console.log('🔍 Session check result:', session ? `✅ ${session.user.email}` : '❌ No session');
+
     if (error) {
       console.error('🔴 Middleware auth error:', error);
       // On error, redirect to login to be safe
       if (!req.nextUrl.pathname.startsWith('/auth')) {
+        console.log('🔄 Redirecting to login due to error');
         return NextResponse.redirect(new URL('/auth/login', req.url));
       }
     }
@@ -76,19 +81,20 @@ export async function middleware(req: NextRequest) {
     // Auth pages - redirect to home if already logged in
     if (req.nextUrl.pathname.startsWith('/auth')) {
       if (session) {
-        console.log('✅ User already logged in, redirecting to home');
+        console.log('✅ User already logged in, redirecting to home from auth page');
         return NextResponse.redirect(new URL('/', req.url));
       }
+      console.log('ℹ️ No session, allowing access to auth page');
       return response;
     }
 
     // Protected pages - redirect to login if not authenticated
     if (!session) {
-      console.log('🔒 No session found, redirecting to login');
+      console.log('🔒 No session found, redirecting to login from:', req.nextUrl.pathname);
       return NextResponse.redirect(new URL('/auth/login', req.url));
     }
 
-    console.log('✅ Session valid for:', session.user.email);
+    console.log('✅ Session valid, allowing access to:', req.nextUrl.pathname);
     return response;
   } catch (err) {
     console.error('🔴 Middleware error:', err);

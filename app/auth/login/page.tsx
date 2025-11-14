@@ -43,11 +43,32 @@ export default function LoginPage() {
 
       if (data.user) {
         console.log('✅ Login successful for user:', data.user.email);
-        console.log('📍 Session created, redirecting to home...');
+        console.log('🔍 Verifying session was created...');
 
-        // Use router.push with refresh to update auth state
-        router.push('/');
-        router.refresh();
+        // Verify session was actually created
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error('🔴 Session check error:', sessionError);
+          setError('Session creation failed');
+          setLoading(false);
+          return;
+        }
+
+        if (session) {
+          console.log('✅ Session confirmed for:', session.user.email);
+          console.log('📍 Redirecting to home in 100ms...');
+
+          // Force a hard redirect after a small delay to ensure session is stored
+          setTimeout(() => {
+            console.log('🔄 Executing redirect now...');
+            window.location.href = '/';
+          }, 100);
+        } else {
+          console.error('🔴 No session found after login');
+          setError('Session not created properly');
+          setLoading(false);
+        }
       } else {
         console.error('🔴 No user data returned');
         setError('Login failed - no user data');

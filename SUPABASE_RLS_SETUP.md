@@ -1,26 +1,62 @@
 # Supabase Row Level Security (RLS) Setup
 
-## Current Issue
+## ⚠️ CRITICAL ISSUE - RLS Blocking Read Access
 
-The Picxie Web application uses the Supabase anonymous (anon) key, which has limited permissions due to Row Level Security (RLS) policies. Currently:
+**Diagnosis Complete:** RLS policies are blocking the web app from reading sites and projects data.
 
-- ✅ **READ operations work** - The app can fetch and display data from all tables
-- ❌ **WRITE operations blocked** - The app cannot create, update, or delete records
+**Current Situation:**
+- ✅ **Photos table**: RLS allows reads - app can see 2 photos
+- ❌ **Sites table**: RLS blocks reads - app shows 0 sites (but 6+ exist in DB)
+- ❌ **Projects table**: RLS blocks reads - app shows 0 projects (but 6+ exist in DB)
+- ❌ **WRITE operations**: All blocked on all tables
 
-This means:
-- Dashboard, Photos, Sites, and Projects pages display correctly
-- The debug page's "Fix Missing Data" function will fail
-- Any future admin features (create/edit/delete) will not work
+**Evidence:**
+- Database contains 6 sites and 6 projects (confirmed via SQL Editor)
+- Photos have valid `site_id` foreign keys
+- Web app queries return `[]` (empty array) with no error
+- This is RLS silently filtering results, not a query problem
 
-## Quick Fix for Development
+**Impact:**
+- Dashboard shows 0 sites, 0 projects (incorrect)
+- Sites page shows "No sites yet" (incorrect)
+- Projects page shows "No projects" (incorrect)
+- Photos page works but can't show site names
+- Debug page shows 0 sites, 0 projects (incorrect)
 
-If you want to enable write operations immediately for development, disable RLS on the tables:
+## ✅ SOLUTION - Apply RLS Policies (5 minutes)
+
+**Recommended Fix:** Run the provided SQL script to create proper read policies.
+
+### Step-by-Step Instructions:
+
+1. **Open Supabase SQL Editor**
+   - Go to: https://app.supabase.com/project/ampxyzotiiqmwcwsdfut
+   - Click **SQL Editor** in the left sidebar
+
+2. **Run the RLS Setup Script**
+   - Click **New Query**
+   - Copy the contents of `scripts/setup-rls-policies.sql`
+   - Paste into the SQL editor
+   - Click **Run** (or press Cmd/Ctrl + Enter)
+
+3. **Verify It Worked**
+   - You should see output showing the created policies
+   - Run the verification query at the end to confirm
+
+4. **Test the Web App**
+   - Refresh your web app
+   - Dashboard should now show 6 sites and 6 projects
+   - Sites and Projects pages should list data
+
+### Alternative: Disable RLS (Quick but less secure)
+
+If you want to completely disable RLS for development:
 
 1. Go to your Supabase Dashboard: https://app.supabase.com/project/ampxyzotiiqmwcwsdfut
 2. Navigate to **Table Editor**
 3. For each table (sites, projects, photos):
    - Click on the table
-   - Go to the **RLS** tab
+   - Go to the **RLS** tab (shield icon)
    - Click **Disable RLS**
 
 ⚠️ **Warning**: This makes your database publicly writable. Only do this for development/testing.

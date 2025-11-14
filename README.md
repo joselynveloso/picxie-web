@@ -58,11 +58,25 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 npm run dev
 ```
 
-5. Configure Supabase Row Level Security (RLS):
+5. **⚠️ CRITICAL: Configure Supabase Row Level Security (RLS)**
 
-See [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) for detailed instructions on setting up database permissions.
+Without this step, the app will show 0 sites and 0 projects even if data exists!
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+**Quick Fix (5 minutes):**
+1. Go to Supabase Dashboard → SQL Editor
+2. Copy contents of `scripts/setup-rls-policies.sql`
+3. Paste and run the query
+4. Verify policies are created
+
+See [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) for detailed instructions.
+
+6. (Optional) Clean up duplicate data if needed:
+```bash
+# Run in Supabase SQL Editor
+# See scripts/cleanup-duplicates.sql
+```
+
+7. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
@@ -95,12 +109,22 @@ For detailed schema, see [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md).
 
 ### Available Scripts
 
+**Development:**
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
-- `npx tsx scripts/check-db.ts` - Check database state and counts
-- `npx tsx scripts/fix-data.ts` - Fix missing site/project relationships
+
+**Database Diagnostics:**
+- `npx tsx scripts/check-db.ts` - Quick database health check (counts and photo details)
+- `npx tsx scripts/detailed-check.ts` - In-depth RLS diagnostics (identifies blocking issues)
+- `npx tsx scripts/fix-data.ts` - Auto-fix missing site/project relationships (requires RLS)
+
+**SQL Scripts (run in Supabase SQL Editor):**
+- `scripts/setup-rls-policies.sql` - Configure RLS policies to allow app access ⚠️ **RUN THIS FIRST**
+- `scripts/cleanup-duplicates.sql` - Remove duplicate sites and projects
+
+See [scripts/README.md](./scripts/README.md) for detailed usage instructions.
 
 ### Documentation
 
@@ -108,7 +132,8 @@ For detailed schema, see [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md).
 - [CODEBASE_STRUCTURE.md](./CODEBASE_STRUCTURE.md) - Detailed architecture
 - [DATA_ANALYSIS.md](./DATA_ANALYSIS.md) - Data integrity analysis
 - [DEVELOPMENT_PRIORITIES.md](./DEVELOPMENT_PRIORITIES.md) - Roadmap
-- [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) - Database security configuration
+- [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) - **⚠️ Database security configuration (READ THIS FIRST)**
+- [scripts/README.md](./scripts/README.md) - Utility scripts documentation
 
 ## Design System
 
@@ -129,13 +154,23 @@ Picxie Web uses a **monochrome design** inspired by Apple's aesthetic:
 - Responsive mobile/tablet/desktop layout
 
 ### ⚠️ Known Issues
-- **Row Level Security (RLS)** - Write operations blocked by Supabase RLS policies
-  - See [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md) for configuration
-- **Missing data relationships** - Photos exist but may lack site/project associations
-  - Use debug page (`/debug`) to inspect data
-  - Run `npx tsx scripts/fix-data.ts` to auto-fix (requires RLS setup)
-- No authentication implemented yet
-- CRUD operations not functional (UI only)
+
+**CRITICAL - RLS Not Configured (v0.2.1 diagnosed)**
+- **Symptom:** App shows 0 sites and 0 projects even when data exists in database
+- **Root Cause:** Supabase Row Level Security blocks reads on sites/projects tables
+- **Fix:** Run `scripts/setup-rls-policies.sql` in Supabase SQL Editor
+- **Details:** See [SUPABASE_RLS_SETUP.md](./SUPABASE_RLS_SETUP.md)
+
+**Data Issues:**
+- **Duplicate data** - Running SQL scripts multiple times creates duplicates
+  - Use `scripts/cleanup-duplicates.sql` to merge duplicates
+- **Missing relationships** - Photos may lack site/project associations
+  - Use debug page (`/debug`) to inspect
+  - Run `scripts/fix-data.ts` after RLS is configured
+
+**Not Implemented:**
+- Authentication and authorization
+- CRUD operations (create/edit/delete UI)
 
 ### ❌ Not Implemented Yet
 - Authentication & authorization

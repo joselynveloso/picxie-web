@@ -14,6 +14,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add advanced filtering and search capabilities
 - Create admin management interfaces
 
+## [0.2.1] - 2025-11-08
+
+### Diagnosed
+- **CRITICAL RLS Issue Identified**
+  - Root cause: Row Level Security policies blocking SELECT queries on sites and projects tables
+  - Symptom: App shows 0 sites and 0 projects when 6+ records exist in database
+  - Evidence: Photos table accessible, but sites/projects queries return empty arrays
+  - Impact: All pages showing incorrect data (Dashboard, Sites, Projects)
+
+### Added
+- **Diagnostic Scripts**
+  - `scripts/detailed-check.ts` - In-depth RLS and query diagnostics
+  - Shows exact queries being run and their results
+  - Identifies RLS blocking vs actual empty tables
+  - Tests both count queries and data queries
+
+- **SQL Utilities**
+  - `scripts/setup-rls-policies.sql` - Complete RLS policy setup for all tables
+  - Creates read policies for sites, projects, photos, user_profiles
+  - Optional write policies (commented) for development
+  - Includes verification queries to confirm policy creation
+
+  - `scripts/cleanup-duplicates.sql` - Remove duplicate sites and projects
+  - Merges duplicate sites (same coordinates)
+  - Merges duplicate projects (same site + status)
+  - Updates foreign keys before deletion
+  - Links photos to projects if NULL
+  - Shows before/after state for verification
+
+- **Documentation**
+  - `scripts/README.md` - Comprehensive guide for all utility scripts
+  - Common workflow documentation
+  - Troubleshooting guide for RLS issues
+  - Script execution requirements
+
+### Changed
+- **SUPABASE_RLS_SETUP.md** - Complete rewrite
+  - Added clear diagnosis of current issue
+  - Step-by-step instructions to apply fix (5 minutes)
+  - Evidence section explaining what's happening
+  - Impact section showing affected pages
+  - Alternative quick fix (disable RLS)
+
+- **README.md** - Enhanced setup instructions
+  - Added CRITICAL warning about RLS configuration
+  - Moved RLS setup to step 5 (before running app)
+  - Added quick fix steps directly in README
+  - Reorganized "Available Scripts" section
+  - Updated "Known Issues" with RLS diagnosis
+  - Added scripts/README.md to documentation links
+
+### Technical Details
+- RLS policies silently filter results instead of throwing errors
+- Queries return `[]` (empty array) with `error: null`
+- Photos have valid `site_id` foreign keys proving sites exist
+- Querying sites by specific IDs still returns empty (confirms RLS blocking)
+- Anon key used by web app vs service/postgres role used in SQL Editor
+
+### User Actions Required
+1. **Immediate:** Run `scripts/setup-rls-policies.sql` in Supabase SQL Editor
+2. **If duplicates exist:** Run `scripts/cleanup-duplicates.sql` in SQL Editor
+3. **Verify fix:** Refresh web app - should show 6 sites and 6 projects
+4. **Link photos:** Run `npx tsx scripts/fix-data.ts` (after RLS configured)
+
 ## [0.2.0] - 2025-11-08
 
 ### Added
@@ -217,7 +281,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 }
 ```
 
-[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/yourusername/picxie-web/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/yourusername/picxie-web/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/yourusername/picxie-web/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/yourusername/picxie-web/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/yourusername/picxie-web/compare/v0.1.0...v0.1.1

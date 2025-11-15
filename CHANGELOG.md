@@ -16,6 +16,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.8.2] - 2025-11-14
+
+### Fixed - Mobile Upload Authentication 🔐
+
+**Issue**: Mobile app photo uploads failing with RLS (Row Level Security) errors even with storage policies configured.
+
+**Root Cause**: Using anonymous key instead of authenticated session token in Authorization header. RLS policies require authenticated user context to identify who is performing the upload.
+
+**Mobile App Fix** (`picxie-mobile/src/stores/photoStore.ts`):
+- Check authentication before upload with `supabase.auth.getSession()`
+- Use `session.access_token` instead of anon key in Authorization header
+- Return null early if user not authenticated
+- Log authentication status (user email, token existence) for debugging
+- Changed `x-upsert` to 'true' to allow file overwriting
+
+**Result**:
+- ✅ Authenticated uploads now pass RLS policies
+- ✅ User identity properly identified for storage permissions
+- ✅ Detailed logging shows authentication status
+- ✅ Graceful handling when user not logged in
+
+**Technical**: The session access token contains the user's JWT which Supabase uses to evaluate RLS policies. Using the anon key bypasses user authentication, causing policy checks to fail.
+
 ## [0.8.0] - 2025-11-14
 
 ### Fixed - Critical Photo Display Issue 🔧

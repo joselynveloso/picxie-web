@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `PhotoImage` component to show "Mobile photo - not synced" placeholder
 - Photos uploaded via web UploadModal work correctly (they do upload to Storage)
 
-**Next Steps**: Mobile app needs to be updated to upload photos to Supabase Storage for full web/mobile sync. For now, web shows informative placeholder for mobile photos.
+**Mobile App Updated**: ✅ Mobile app (`picxie-mobile`) has been enhanced to upload photos to Supabase Storage! New photos captured on mobile now automatically upload to cloud and appear on web instantly via real-time subscriptions. Full web/mobile sync achieved!
 
 ### Added - Photo Display Improvements & Real-Time Sync 📸
 

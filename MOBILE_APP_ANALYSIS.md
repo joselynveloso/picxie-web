@@ -33,25 +33,38 @@ https://ampxyzotiiqmwcwsdfut.supabase.co/storage/v1/object/public/photos/9207083
 // Returns HTTP 400 - file not found
 ```
 
-## Solution: Web App Needs Photo Upload
+## ✅ Solution Implemented: Mobile App Now Uploads to Cloud Storage
 
-The web app's `UploadModal` component correctly uploads to Supabase Storage, but there's no automatic sync from mobile.
+**UPDATED**: The mobile app has been enhanced to upload photos to Supabase Storage!
 
-### Options:
+### What Changed:
 
-1. **Option A**: Modify mobile app to upload photos to Supabase Storage
-   - Add upload function to `photoStore.ts`
-   - Upload after capture in `CameraScreen.tsx`
-   - Store Supabase Storage URL instead of local_uri
+**Mobile App (`picxie-mobile/src/stores/photoStore.ts`)**:
 
-2. **Option B**: Web app displays placeholder for mobile photos
-   - Show metadata without image for mobile-captured photos
-   - Only display images uploaded via web
+1. **New `uploadPhotoToStorage()` method**:
+   - Fetches local file as blob
+   - Uploads to Supabase Storage bucket 'photos'
+   - Returns public URL for web access
+   - Handles errors gracefully
 
-3. **Option C** (Recommended): Implement mobile photo upload
-   - Modify mobile app to upload to Supabase Storage
-   - Use same bucket structure as web app
-   - Update web app to handle both cases
+2. **Enhanced `addPhotoToSupabase()`**:
+   - Now uploads photo to storage FIRST before database
+   - Stores storage URL in `local_uri` field instead of `file://` path
+   - Falls back to local URI if upload fails
+   - Photos immediately available on web app
+
+3. **Enhanced `syncToSupabase()`**:
+   - Uploads all local photos to storage during sync
+   - Converts existing `file://` URIs to cloud storage URLs
+   - Logs upload progress and count
+
+### Result:
+
+- ✅ New photos auto-upload when captured
+- ✅ Photos instantly sync to web app via real-time subscriptions
+- ✅ Full web/mobile synchronization achieved
+- ✅ Existing mobile photos can be uploaded via sync function
+- ✅ Web app's photo display now works for mobile photos
 
 ## Mobile App Theme
 

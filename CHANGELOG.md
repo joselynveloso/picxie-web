@@ -18,6 +18,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.8.0] - 2025-11-14
 
+### Fixed - Critical Photo Display Issue 🔧
+
+**Root Cause Discovered**: Mobile app does NOT upload photos to Supabase Storage! Photos captured on mobile devices stay on the device filesystem and are never uploaded to cloud storage. The web app was trying to fetch non-existent files, resulting in 400 errors and "Image not available" messages.
+
+**How Mobile App Works** (analyzed `picxie-mobile`):
+- Photos captured with Expo Camera are stored locally on device (`file:///...`)
+- Only metadata syncs to Supabase database (file_name, GPS, site_id, etc.)
+- `local_uri` field contains device file path
+- No upload to Supabase Storage occurs
+- See `CameraScreen.tsx:201-234` and `photoStore.ts:300-356`
+
+**Web App Fix**:
+- Updated `getPhotoUrl()` to detect mobile-only photos via `local_uri` field
+- Returns empty string for photos with `local_uri` starting with `file://`
+- Updated `PhotoImage` component to show "Mobile photo - not synced" placeholder
+- Photos uploaded via web UploadModal work correctly (they do upload to Storage)
+
+**Next Steps**: Mobile app needs to be updated to upload photos to Supabase Storage for full web/mobile sync. For now, web shows informative placeholder for mobile photos.
+
 ### Added - Photo Display Improvements & Real-Time Sync 📸
 
 Enhanced photo display functionality and added real-time synchronization between web and mobile apps.

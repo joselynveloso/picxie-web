@@ -190,7 +190,7 @@ export default function UploadModal({ onClose }: UploadModalProps) {
           longitude: exif?.longitude || 0,
           address: exif?.address || null,
           captured_at: new Date().toISOString(),
-        });
+        } as any);
 
         if (dbError) {
           throw new Error(`Database insert failed: ${dbError.message}`);

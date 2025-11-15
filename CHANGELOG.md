@@ -16,6 +16,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.8.0] - 2025-11-14
+
+### Added - Photo Display Improvements & Real-Time Sync 📸
+
+Enhanced photo display functionality and added real-time synchronization between web and mobile apps.
+
+**Photo URL Generation (lib/supabase.ts):**
+- Enhanced `getPhotoUrl()` function with validation and debugging
+- Added empty fileName validation to prevent errors
+- Added console logging for debugging URL generation (logs fileName, URL, and bucket)
+- Created new `checkPhotoExists()` helper function to verify files exist in storage
+- Better error handling for missing or invalid photo files
+
+**Real-Time Sync:**
+- Added Supabase real-time subscriptions for instant sync between web and mobile
+- Photos page automatically refreshes when mobile app adds/updates/deletes photos
+- Dashboard automatically updates photo counts and recent photos in real-time
+- Uses Supabase channels with postgres_changes listeners
+- Subscribes to all events (INSERT, UPDATE, DELETE) on photos table
+- Proper cleanup with unsubscribe on component unmount
+
+**Theme Switching:**
+- Added automatic theme switching based on system preference
+- Supports both light and dark modes using CSS `prefers-color-scheme` media queries
+- Light theme: Clean white background with purple accent (#9333ea)
+- Dark theme: Pure black background with lavender accent (#e9d5ff)
+- All CSS custom properties are now theme-aware
+- Glass effects adapt to theme (black overlay for light mode, white for dark mode)
+- Shadows, borders, and vignettes adjust automatically
+- Photo loading skeletons adapt to current theme
+- Seamless theme switching without page reload
+
+**Files Changed:**
+- `lib/supabase.ts` - Enhanced photo URL generation and validation
+- `app/photos/page.tsx` - Added real-time subscription for photos
+- `app/page.tsx` - Added real-time subscription for dashboard
+- `app/globals.css` - Implemented automatic theme switching with media queries
+
+**Technical Details:**
+- Real-time subscriptions use unique channel names to prevent conflicts
+- Dashboard subscription includes 100ms debounce for smooth updates
+- Theme variables defined separately for light/dark modes
+- All components automatically respect theme via CSS custom properties
+
+**Benefits:**
+- Photos display more reliably with better error handling
+- Web app stays in sync with mobile app changes instantly
+- Users get consistent experience matching their system theme
+- Better debugging with detailed console logging
+- No more hardcoded dark theme - respects user preferences
+
 ## [0.7.5] - 2025-11-13
 
 ### Changed - Disabled Middleware, Using Client-Side Auth 🔄

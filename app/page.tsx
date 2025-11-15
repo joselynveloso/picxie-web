@@ -97,6 +97,47 @@ export default function DashboardPage() {
     }
   }, [user]);
 
+  // Real-time subscription for instant sync with mobile app
+  useEffect(() => {
+    if (!user) return;
+
+    console.log('📡 Setting up real-time subscription for dashboard');
+
+    const subscription = supabase
+      .channel('dashboard-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'photos'
+      }, (payload) => {
+        console.log('📸 Photo change detected on dashboard:', payload);
+        // Refresh dashboard when mobile app adds/updates/deletes photos
+        setDataLoading(true);
+        setTimeout(async () => {
+          const [photosResult, recentPhotosResult] = await Promise.all([
+            supabase.from('photos').select('*', { count: 'exact', head: true }),
+            supabase
+              .from('photos')
+              .select('*')
+              .order('captured_at', { ascending: false })
+              .limit(6)
+          ]);
+          setData(prev => ({
+            ...prev,
+            totalPhotos: photosResult.count ?? 0,
+            recentPhotos: (recentPhotosResult.data ?? []) as Photo[],
+          }));
+          setDataLoading(false);
+        }, 100);
+      })
+      .subscribe();
+
+    return () => {
+      console.log('📡 Unsubscribing from dashboard changes');
+      subscription.unsubscribe();
+    };
+  }, [user]);
+
   // Show loading state
   if (loading || dataLoading) {
     return (

@@ -21,6 +21,29 @@ export default function PhotosPage() {
     fetchData();
   }, [selectedSite, selectedProject]);
 
+  // Real-time subscription for instant sync with mobile app
+  useEffect(() => {
+    console.log('📡 Setting up real-time subscription for photos');
+
+    const subscription = supabase
+      .channel('photos-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'photos'
+      }, (payload) => {
+        console.log('📸 Photo change detected:', payload);
+        // Refresh photos when mobile app adds/updates/deletes photos
+        fetchData();
+      })
+      .subscribe();
+
+    return () => {
+      console.log('📡 Unsubscribing from photos changes');
+      subscription.unsubscribe();
+    };
+  }, [selectedSite, selectedProject]);
+
   async function fetchData() {
     setLoading(true);
 

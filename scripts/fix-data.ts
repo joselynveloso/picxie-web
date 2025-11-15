@@ -33,7 +33,7 @@ async function fixMissingData() {
 
   // Create sites for each unique address
   for (const [address, addressPhotos] of addressMap.entries()) {
-    const firstPhoto = addressPhotos[0];
+    const firstPhoto = addressPhotos[0] as any;
 
     // Check if site already exists for this location
     const { data: existingSite } = await supabase
@@ -47,7 +47,7 @@ async function fixMissingData() {
 
     if (existingSite) {
       console.log(`Site already exists for ${address}`);
-      siteId = existingSite.id;
+      siteId = (existingSite as any).id;
     } else {
       // Create new site
       const siteName = address.split(',')[0].trim(); // Use first part of address as site name
@@ -68,7 +68,7 @@ async function fixMissingData() {
         continue;
       }
 
-      siteId = newSite!.id;
+      siteId = (newSite as any)!.id;
       console.log(`Created site: ${siteName} (ID: ${siteId})`);
     }
 
@@ -84,7 +84,7 @@ async function fixMissingData() {
 
     if (existingProject) {
       console.log(`Active project already exists for site ${siteId}`);
-      projectId = existingProject.id;
+      projectId = (existingProject as any).id;
     } else {
       const { data: newProject, error: projectError } = await supabase
         .from('projects')
@@ -101,12 +101,12 @@ async function fixMissingData() {
         continue;
       }
 
-      projectId = newProject!.id;
+      projectId = (newProject as any)!.id;
       console.log(`Created project: Default Project (ID: ${projectId})`);
     }
 
     // Link all photos at this address to the site and project
-    for (const photo of addressPhotos) {
+    for (const photo of addressPhotos as any[]) {
       const { error: updateError } = await supabase
         .from('photos')
         .update({

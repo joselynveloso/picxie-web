@@ -44,6 +44,7 @@ export default function PhotoGrid({ photos, columns = 3 }: PhotoGridProps) {
             >
               <PhotoImage
                 fileName={photo.file_name}
+                localUri={photo.local_uri}
                 alt={photo.address || 'Photo'}
                 fill
                 className="object-cover transition-all duration-600"

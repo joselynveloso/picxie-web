@@ -7,6 +7,7 @@ import { ImageOff } from 'lucide-react';
 
 interface PhotoImageProps {
   fileName: string;
+  localUri?: string | null;
   alt: string;
   fill?: boolean;
   className?: string;
@@ -17,6 +18,7 @@ interface PhotoImageProps {
 
 export default function PhotoImage({
   fileName,
+  localUri,
   alt,
   fill = true,
   className = '',
@@ -27,14 +29,19 @@ export default function PhotoImage({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const imageUrl = getPhotoUrl(fileName);
+  const imageUrl = getPhotoUrl(fileName, localUri);
 
-  if (hasError) {
+  // Check if this is a mobile-only photo (no cloud storage URL)
+  const isMobileOnly = !imageUrl || (localUri && localUri.startsWith('file://'));
+
+  if (hasError || isMobileOnly) {
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a]">
         <div className="flex flex-col items-center gap-3">
           <ImageOff className="h-8 w-8 text-white/20" />
-          <p className="text-xs text-white/40">Image unavailable</p>
+          <p className="text-xs text-white/40">
+            {isMobileOnly ? 'Mobile photo - not synced' : 'Image unavailable'}
+          </p>
         </div>
       </div>
     );

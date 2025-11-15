@@ -17,17 +17,27 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 /**
  * Get the public URL for a photo from Supabase Storage
  * @param fileName - The file name stored in the photos table
- * @returns The public URL to access the image
+ * @param localUri - Optional local_uri field (for mobile photos)
+ * @returns The public URL to access the image, or empty string if not available
  */
-export function getPhotoUrl(fileName: string): string {
+export function getPhotoUrl(fileName: string, localUri?: string | null): string {
   console.log('=== PHOTO DEBUG ===');
   console.log('Filename from DB:', fileName);
+  console.log('Local URI from DB:', localUri);
   console.log('Filename type:', typeof fileName);
   console.log('Filename length:', fileName?.length);
 
   if (!fileName) {
     console.warn('⚠️ getPhotoUrl called with empty fileName');
     return '';
+  }
+
+  // Check if this is a mobile-only photo (has local_uri starting with file://)
+  if (localUri && localUri.startsWith('file://')) {
+    console.warn('⚠️ Mobile-only photo detected - file not available in cloud storage');
+    console.log('   Local URI:', localUri);
+    console.log('   ℹ️ This photo was captured on mobile and not uploaded to Supabase Storage');
+    return ''; // Return empty - PhotoImage component will show placeholder
   }
 
   // Check if it's a full URL already
@@ -42,13 +52,13 @@ export function getPhotoUrl(fileName: string): string {
     return fileName;
   }
 
-  // Check if it's a file:// URL (sometimes from mobile)
+  // Check if it's a file:// URL (legacy mobile format)
   if (fileName.startsWith('file://')) {
-    console.warn('⚠️ File URL detected (mobile local path), cannot display:', fileName);
+    console.warn('⚠️ File URL detected in fileName (mobile local path), cannot display:', fileName);
     return '';
   }
 
-  // Otherwise build storage URL
+  // Otherwise build storage URL (for web-uploaded photos)
   const { data } = supabase.storage
     .from('photos')
     .getPublicUrl(fileName);
@@ -56,6 +66,7 @@ export function getPhotoUrl(fileName: string): string {
   console.log('🔗 Built storage URL:', data.publicUrl);
   console.log('   - Bucket: photos');
   console.log('   - Path used:', fileName);
+  console.log('   - ℹ️ This should be a web-uploaded photo');
 
   return data.publicUrl;
 }

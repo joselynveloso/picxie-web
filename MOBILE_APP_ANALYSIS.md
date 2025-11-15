@@ -41,11 +41,12 @@ https://ampxyzotiiqmwcwsdfut.supabase.co/storage/v1/object/public/photos/9207083
 
 **Mobile App (`picxie-mobile/src/stores/photoStore.ts`)**:
 
-1. **New `uploadPhotoToStorage()` method**:
-   - Fetches local file as blob
+1. **New `uploadPhotoToStorage()` method** (React Native compatible):
+   - Reads local file as base64 using expo-file-system
+   - Converts base64 to Uint8Array for upload
    - Uploads to Supabase Storage bucket 'photos'
    - Returns public URL for web access
-   - Handles errors gracefully
+   - Handles errors gracefully with fallback
 
 2. **Enhanced `addPhotoToSupabase()`**:
    - Now uploads photo to storage FIRST before database

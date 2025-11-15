@@ -16,6 +16,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add email verification flow
 - Add password reset functionality
 
+## [0.7.5] - 2025-11-13
+
+### Changed - Disabled Middleware, Using Client-Side Auth 🔄
+
+Disabled server-side middleware and implemented client-side authentication protection.
+
+**Middleware:**
+- Renamed `middleware.ts` to `middleware.ts.backup` (disabled)
+- Server-side middleware was causing redirect loops
+- Removed all middleware-based auth checks
+
+**Dashboard Page (app/page.tsx):**
+- Converted from Server Component to Client Component (`'use client'`)
+- Added client-side auth protection with `useAuth()` hook
+- Automatic redirect to `/auth/login` if no user
+- Shows loading state while checking authentication
+- Data fetching happens client-side after auth check
+- Better user experience with proper loading states
+
+**Technical Changes:**
+- `useEffect` hook monitors auth state and redirects if needed
+- Separate loading states for auth and data fetching
+- Returns `null` while redirecting to prevent flash of content
+- Dashboard data fetched only after user is confirmed
+
+**Benefits:**
+- Fixes middleware redirect loop issue
+- More reliable authentication flow
+- Better control over auth state
+- Clearer loading states for users
+- Login should work properly now
+
 ## [0.7.4] - 2025-11-13
 
 ### Fixed - Middleware Using getUser() for Reliable Auth Checks 🔧

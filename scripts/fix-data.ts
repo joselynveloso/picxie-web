@@ -22,7 +22,7 @@ async function fixMissingData() {
 
   // Group photos by address to create sites
   const addressMap = new Map();
-  for (const photo of photos) {
+  for (const photo of photos as any[]) {
     if (!addressMap.has(photo.address)) {
       addressMap.set(photo.address, []);
     }

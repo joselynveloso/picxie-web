@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import type { Database } from '../types/database';
 
 async function fixMissingData() {
   console.log('Starting data fix...\n');
@@ -36,12 +37,12 @@ async function fixMissingData() {
     const firstPhoto = addressPhotos[0] as any;
 
     // Check if site already exists for this location
-    const { data: existingSite } = await supabase
+    const { data: existingSite, error: siteCheckError } = await supabase
       .from('sites')
       .select('*')
       .eq('latitude', firstPhoto.latitude)
       .eq('longitude', firstPhoto.longitude)
-      .single();
+      .maybeSingle();
 
     let siteId: string;
 
@@ -51,15 +52,16 @@ async function fixMissingData() {
     } else {
       // Create new site
       const siteName = address.split(',')[0].trim(); // Use first part of address as site name
+      const siteInsert: Database['public']['Tables']['sites']['Insert'] = {
+        name: siteName,
+        latitude: firstPhoto.latitude,
+        longitude: firstPhoto.longitude,
+        radius_meters: 100,
+        folder_name: address
+      };
       const { data: newSite, error: siteError } = await supabase
         .from('sites')
-        .insert({
-          name: siteName,
-          latitude: firstPhoto.latitude,
-          longitude: firstPhoto.longitude,
-          radius_meters: 100,
-          folder_name: address
-        })
+        .insert(siteInsert)
         .select()
         .single();
 
@@ -73,12 +75,12 @@ async function fixMissingData() {
     }
 
     // Create a default project for this site
-    const { data: existingProject } = await supabase
+    const { data: existingProject, error: projectCheckError } = await supabase
       .from('projects')
       .select('*')
       .eq('site_id', siteId)
       .eq('status', 'Active')
-      .single();
+      .maybeSingle();
 
     let projectId: string;
 
@@ -86,13 +88,14 @@ async function fixMissingData() {
       console.log(`Active project already exists for site ${siteId}`);
       projectId = (existingProject as any).id;
     } else {
+      const projectInsert: Database['public']['Tables']['projects']['Insert'] = {
+        name: `Default Project`,
+        site_id: siteId,
+        status: 'Active'
+      };
       const { data: newProject, error: projectError } = await supabase
         .from('projects')
-        .insert({
-          name: `Default Project`,
-          site_id: siteId,
-          status: 'Active'
-        })
+        .insert(projectInsert)
         .select()
         .single();
 

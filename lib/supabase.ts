@@ -20,20 +20,42 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
  * @returns The public URL to access the image
  */
 export function getPhotoUrl(fileName: string): string {
+  console.log('=== PHOTO DEBUG ===');
+  console.log('Filename from DB:', fileName);
+  console.log('Filename type:', typeof fileName);
+  console.log('Filename length:', fileName?.length);
+
   if (!fileName) {
-    console.warn('getPhotoUrl called with empty fileName');
+    console.warn('⚠️ getPhotoUrl called with empty fileName');
     return '';
   }
 
+  // Check if it's a full URL already
+  if (fileName.startsWith('http://') || fileName.startsWith('https://')) {
+    console.log('✅ Already a full URL:', fileName);
+    return fileName;
+  }
+
+  // Check if it's base64 data
+  if (fileName.startsWith('data:image')) {
+    console.log('✅ Base64 image detected, length:', fileName.length);
+    return fileName;
+  }
+
+  // Check if it's a file:// URL (sometimes from mobile)
+  if (fileName.startsWith('file://')) {
+    console.warn('⚠️ File URL detected (mobile local path), cannot display:', fileName);
+    return '';
+  }
+
+  // Otherwise build storage URL
   const { data } = supabase.storage
     .from('photos')
     .getPublicUrl(fileName);
 
-  console.log('Photo URL generated:', {
-    fileName,
-    url: data.publicUrl,
-    bucket: 'photos'
-  });
+  console.log('🔗 Built storage URL:', data.publicUrl);
+  console.log('   - Bucket: photos');
+  console.log('   - Path used:', fileName);
 
   return data.publicUrl;
 }
@@ -61,4 +83,55 @@ export async function checkPhotoExists(fileName: string): Promise<boolean> {
     console.error('Error in checkPhotoExists:', error);
     return false;
   }
+}
+
+/**
+ * Try to find the correct path for a photo by testing common patterns
+ * @param fileName - The base file name
+ * @param userId - Optional user ID to try user-specific paths
+ * @returns Promise<string | null> - The working path or null if not found
+ */
+export async function findPhotoPath(fileName: string, userId?: string): Promise<string | null> {
+  console.log('🔍 Searching for photo path:', fileName);
+
+  // List of possible path patterns to try
+  const pathsToTry = [
+    fileName,                          // Just the filename
+    `${fileName}`,                     // Filename with leading slash
+    `photos/${fileName}`,              // In photos subfolder
+    `public/${fileName}`,              // In public subfolder
+  ];
+
+  // Add user-specific paths if userId provided
+  if (userId) {
+    pathsToTry.push(
+      `${userId}/${fileName}`,
+      `users/${userId}/${fileName}`,
+      `${userId}/photos/${fileName}`
+    );
+  }
+
+  console.log('   Trying paths:', pathsToTry);
+
+  for (const path of pathsToTry) {
+    try {
+      // Try to get file metadata to check if it exists
+      const { data, error } = await supabase.storage
+        .from('photos')
+        .list(path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '', {
+          search: path.includes('/') ? path.substring(path.lastIndexOf('/') + 1) : path
+        });
+
+      if (!error && data && data.length > 0) {
+        console.log('✅ Found photo at path:', path);
+        return path;
+      }
+    } catch (err) {
+      // Continue to next path
+      continue;
+    }
+  }
+
+  console.warn('❌ Photo not found in any path pattern');
+  return null;
 }
